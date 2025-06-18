@@ -1,20 +1,19 @@
-    <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-        <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUPABAP MASTER IA - Register & Login</title>
+    <title>SUPABAP WISE- Register & Login</title>
 
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="styles/login.css">
-   
-    <script type="module" src="scripts/firebaseauth_abap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles/login_abap.css">
+       <script type="module" src="scripts/login.js"></script>
+    <script type="module" src="scripts/firebaseauth.js"></script>
 </head>
 <body>
   <div id="intro-container">
-     
-    <div id="sap-icon" class="intro-element">🔷</div>
+           <div id="sap-icon" class="intro-element">🔷</div>
         <div id="enem-text" class="intro-element">SUPABAP WISE</div>
         <div id="ai-text" class="intro-element">Artificial intelligence</div>
           <div id="sap-text" class="intro-element">SAP Development</div>
@@ -25,8 +24,9 @@
     <div id="subject-fiori" class="intro-element">SAP Fiori</div>
     <div id="subject-hana" class="intro-element">SAP HANA</div>
     <div id="subject-btp" class="intro-element">SAP BTP</div>
-</div>
-    </div>
+
+  </div>
+  </div>
 
     <canvas id="animation-canvas"></canvas>
 
@@ -51,9 +51,14 @@
     </form>
 
     <div class="links">
-        <p>Don't have an account?</p>
+        <p>Dont have an account?</p>
     </div>
     <button id="signUpButton">Create Account</button>
+
+         
+         <div class="input-group">
+                   <button class="btn" id="guestLoginButton">Guest Login</button>
+                  </div>
 </div>
 
 <div id="signup" style="display:none;">
@@ -106,7 +111,6 @@
     <p><h4>Prepare for SAP development with the power of Artificial Intelligence.</p>
     <p>Study in a personalized way and maximize your potential.</h4></p>
 </div>
-<script type="module" src="scripts/login_abap.js"></script>
-   
+ 
 </body>
 </html>
