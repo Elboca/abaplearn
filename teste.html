@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<link rel="stylesheet" href="styles/styles.css">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+			<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+	<script type="module" src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+	<script type="module" src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
+	<script type="module" src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
+    <script type="module" src="scripts/test_abap.js"></script>
+</head>
+
+ <body class="bg-gray-100 text-gray-900">
+	 <header class="bg-pink-500 p-4 shadow-md fixed top-0 w-full z-50">
+ 
+
+   
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-book-reader text-white text-2xl"></i>
+                <h1 class="text-1xl font-bold text-white">SUPABAP - MASTER Artificial Intelligence</h1>
+            </div>
+            <!-- Botão do menu para dispositivos móveis -->
+            <button id="menu-toggle" aria-label="Toggle Menu" aria-controls="menu" class="text-white text-2xl md:hidden focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Navegação -->
+            <nav id="menu" class="hidden md:flex">
+                <ul class="flex flex-col md:flex-row md:space-x-4">
+                    <li><a  href="homepage.html" class="nav-link px-4 py-2"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="aulas.html" class="nav-link px-4 py-2"><i class="fas fa-book-open"></i> Lessons</a></li>
+                    <li><a href="teste.html" class="nav-link px-4 py-2"><i class="fas fa-pencil-alt"></i> Tests</a></li>
+                <li><a  href="tutorial.html" class="nav-link px-4 py-2"><i class="fas fa-info-circle"></i> Tutorial</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+  <div class="container mx-auto p-6 mt-24" >
+
+        <select id="subjectSelect" class="w-full p-2 border rounded">
+            <option value="">Select a subject</option>
+            <optgroup label="ABAP Basics">
+                <option value="Introduction_to_ABAP">Introduction to ABAP</option>
+                <option value="Data_Dictionary">Data Dictionary</option>
+                <option value="ABAP_Programming_Basics">ABAP Programming Basics</option>
+                <option value="ABAP_Reports">ABAP Reports</option>
+                <option value="Internal_Tables">Internal Tables</option>
+                <option value="Modularization_Techniques">Modularization Techniques</option>
+                <option value="ABAP_Data_Types">ABAP Data Types</option>
+                <option value="ABAP_Debugging">ABAP Debugging</option>
+                <option value="ALV_Reports">ALV Reports</option>
+            </optgroup>
+            <optgroup label="ABAP Object-Oriented">
+                <option value="Introduction_to_ABAP_OO">Introduction to ABAP OO</option>
+                <option value="Classes_and_Objects">Classes and Objects</option>
+                <option value="Inheritance">Inheritance</option>
+                <option value="Polymorphism">Polymorphism</option>
+                <option value="Interfaces">Interfaces</option>
+                <option value="Events">Events</option>
+                <option value="Exception_Handling">Exception Handling</option>
+                <option value="Singleton_Pattern">Singleton Pattern</option>
+                <option value="Factory_Pattern">Factory Pattern</option>
+                <option value="Advanced_OO_Concepts">Advanced OO Concepts</option>
+            </optgroup>
+            <optgroup label="ABAP RICEFW">
+                <option value="RICEFW_Overview">RICEFW Overview</option>
+                <option value="Reports_in_RICEFW">Reports in RICEFW</option>
+                <option value="Interfaces_in_RICEFW">Interfaces in RICEFW</option>
+                <option value="Conversions_in_RICEFW">Conversions in RICEFW</option>
+                <option value="Enhancements_in_RICEFW">Enhancements in RICEFW</option>
+                <option value="Forms_in_RICEFW">Forms in RICEFW</option>
+                <option value="Workflows_in_RICEFW">Workflows in RICEFW</option>
+            </optgroup>
+            <optgroup label="ABAP BOPF">
+                <option value="Introduction_to_BOPF">Introduction to BOPF</option>
+                <option value="BOPF_Architecture">BOPF Architecture</option>
+                <option value="BOPF_Meta_Model">BOPF Meta Model</option>
+                <option value="BOPF_Development_Tools">BOPF Development Tools</option>
+                <option value="BOPF_Queries">BOPF Queries</option>
+                <option value="Business_Configuration_Objects">Business Configuration Objects</option>
+                <option value="Testing_and_Support_in_BOPF">Testing and Support in BOPF</option>
+                <option value="Transaction_and_Log_Management">Transaction and Log Management</option>
+            </optgroup>
+            <optgroup label="ABAP CRM">
+                <option value="Introduction_to_CRM">Introduction to CRM</option>
+                <option value="CRM_Architecture">CRM Architecture</option>
+                <option value="CRM_Modules">CRM Modules</option>
+                <option value="CRM_Development_Tools">CRM Development Tools</option>
+                <option value="CRM_Configuration">CRM Configuration</option>
+                <option value="CRM_Testing">CRM Testing</option>
+                <option value="CRM_User_Interface">CRM User Interface</option>
+                <option value="Advanced_CRM_Concepts">Advanced CRM Concepts</option>
+            </optgroup>
+            <optgroup label="SAP FIORI">
+                <option value="Introduction_to_FIORI">Introduction to FIORI</option>
+                <option value="Setting_Up_FIORI_Launchpad">Setting Up FIORI Launchpad</option>
+                <option value="Developing_FIORI_Apps">Developing FIORI Apps</option>
+                <option value="Building_FIORI_Apps">Building FIORI Apps</option>
+                <option value="FIORI_Launchpad">FIORI Launchpad</option>
+                <option value="OData_Services">OData Services</option>
+                <option value="FIORI_Security">FIORI Security</option>
+                <option value="Extending_FIORI_Apps">Extending FIORI Apps</option>
+                <option value="FIORI_Performance_Optimization">FIORI Performance Optimization</option>
+                <option value="Advanced_FIORI_Concepts">Advanced FIORI Concepts</option>
+            </optgroup>
+            <optgroup label="SAP PI-CPI">
+                <option value="Introduction_to_SAP_CPI">Introduction to SAP CPI</option>
+                <option value="Architecture_of_SAP_CPI">Architecture of SAP CPI</option>
+                <option value="Integration_Patterns">Integration Patterns</option>
+                <option value="Configuration_in_SAP_PI">Configuration in SAP PI</option>
+                <option value="Configuration_in_SAP_CPI">Configuration in SAP CPI</option>
+                <option value="Message_Mapping">Message Mapping</option>
+                <option value="Error_Handling">Error Handling</option>
+                <option value="Monitoring_and_Administration">Monitoring and Administration</option>
+                <option value="Security_in_PI_CPI">Security in PI/CPI</option>
+                <option value="Advanced_CPI_Concepts">Advanced CPI Concepts</option>
+            </optgroup>
+            <optgroup label="SAP BTP">
+                <option value="Introduction_to_SAP_BTP">Introduction to SAP BTP</option>
+                <option value="SAP_BTP_Services">SAP BTP Services</option>
+                <option value="SAP_BTP_Architecture">SAP BTP Architecture</option>
+                <option value="SAP_BTP_Integration">SAP BTP Integration</option>
+                <option value="SAP_BTP_Security">SAP BTP Security</option>
+                <option value="SAP_BTP_Extension_Suite">SAP BTP Extension Suite</option>
+                <option value="SAP_BTP_Data_and_Analytics">SAP BTP Data and Analytics</option>
+                <option value="SAP_BTP_Development_Tools">SAP BTP Development Tools</option>
+                <option value="SAP_BTP_Application_Development">SAP BTP Application Development</option>
+                <option value="Advanced_SAP_BTP_Concepts">Advanced SAP BTP Concepts</option>
+            </optgroup>
+            <optgroup label="ABAP CDS Views">
+                <option value="Introduction_to_CDS_Views">Introduction to CDS Views</option>
+                <option value="CDS_View_Syntax">CDS View Syntax</option>
+                <option value="CDS_View_Annotations">CDS View Annotations</option>
+                <option value="CDS_View_Associations">CDS View Associations</option>
+                <option value="CDS_View_Extensions">CDS View Extensions</option>
+                <option value="CDS_View_Performance">CDS View Performance Optimization</option>
+            </optgroup>
+            <optgroup label="SAP HANA Modeling">
+                <option value="HANA_Modeling_Basics">HANA Modeling Basics</option>
+                <option value="HANA_Information_Views">HANA Information Views</option>
+                <option value="HANA_Calculation_Views">HANA Calculation Views</option>
+                <option value="HANA_Analytic_Privileges">HANA Analytic Privileges</option>
+                <option value="HANA_SQL_Scripts">HANA SQL Scripts</option>
+                <option value="HANA_Performance_Optimization">HANA Performance Optimization</option>
+            </optgroup>
+            <optgroup label="ABAP RAP">
+                <option value="RAP_Overview">RAP Overview</option>
+                <option value="RAP_Business_Objects">RAP Business Objects</option>
+                <option value="RAP_Behavior_Definition">RAP Behavior Definition</option>
+                <option value="RAP_Behavior_Implementation">RAP Behavior Implementation</option>
+                <option value="RAP_Business_Services">RAP Business Services</option>
+                <option value="RAP_UI_Integration">RAP UI Integration</option>
+            </optgroup>
+            <optgroup label="SAP BW/4HANA">
+                <option value="BW4HANA_Basics">BW/4HANA Basics</option>
+                <option value="BW4HANA_Modeling">BW/4HANA Modeling</option>
+                <option value="BW4HANA_Data_Acquisition">BW/4HANA Data Acquisition</option>
+                <option value="BW4HANA_Reporting">BW/4HANA Reporting</option>
+                <option value="BW4HANA_Administration">BW/4HANA Administration</option>
+                <option value="BW4HANA_Performance_Optimization">BW/4HANA Performance Optimization</option>
+            </optgroup>
+            <optgroup label="SAP S/4HANA Migration">
+                <option value="S4HANA_Migration_Strategy">S/4HANA Migration Strategy</option>
+                <option value="S4HANA_System_Conversion">S/4HANA System Conversion</option>
+                <option value="S4HANA_Data_Migration">S/4HANA Data Migration</option>
+                <option value="S4HANA_Custom_Code_Adaptation">S/4HANA Custom Code Adaptation</option>
+                <option value="S4HANA_Testing_Strategies">S/4HANA Testing Strategies</option>
+                <option value="S4HANA_Post_Migration_Activities">S/4HANA Post-Migration Activities</option>
+            </optgroup>
+        </select>
+
+</div>
+
+ <div class="flex flex-wrap items-end space-x-2 mb-2">
+    <div class="flex-grow">
+        <label for="questionCount" class="block mb-2">Number of Questions:</label>
+        <input type="number" id="questionCount" min="5" max="45" value="10" class="w-full p-2 border rounded">
+    </div>
+
+    <div class="flex-grow">
+        <label for="timerDuration" class="block mb-2">Timer Duration (minutes):</label>
+        <input type="number" id="timerDuration" min="5" max="120" value="30" class="w-full p-2 border rounded">
+    </div>
+</div>
+
+<div class="flex items-center mt-2">
+    <span class="mr-2">Time Remaining:</span>
+    <span id="time" class="mr-2">00:00</span>
+    <button id="controlTimer" class="bg-gray-300 px-2 py-1 rounded">Start</button>
+</div>
+
+     <button class="generate-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Generate Test</button>
+    <div class="questions-container mt-4"></div>
+	 <div id="messageContainer"></div>
+
+
+
+
+
+</body>
+
+</html>

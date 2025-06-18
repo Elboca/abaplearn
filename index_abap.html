@@ -1,0 +1,361 @@
+<!doctype html><html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ABAP E-Learning</title>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="styles/styles.css">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	</head>
+	
+
+<body class="bg-gray-100 text-gray-900">
+    <!-- Header -->
+    <header class="bg-pink-500 p-4 shadow-md fixed top-0 w-full z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-book-reader text-white text-2xl"></i>
+                <h1 class="text-2xl font-bold text-white">ABAP E-Learning</h1>
+            </div>
+            <!-- Botão do menu para dispositivos móveis -->
+            <button id="menu-toggle" aria-label="Toggle Menu" aria-controls="menu" class="text-white text-2xl md:hidden focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Navegação -->
+            <nav id="menu" class="hidden md:flex">
+                <ul class="flex flex-col md:flex-row md:space-x-4">
+                    <li><a href="#" class="nav-link px-4 py-2" data-section="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="#" class="nav-link px-4 py-2" data-section="lessons"><i class="fas fa-book-open"></i> Lessons</a></li>
+                    <li><a href="#" class="nav-link px-4 py-2" data-section="tests"><i class="fas fa-pencil-alt"></i> Tests</a></li>
+                    <li><a href="#" class="nav-link px-4 py-2" data-section="profile"><i class="fas fa-user"></i> Profile</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+
+	
+
+	<div class="container mx-auto p-6 mt-24">
+
+
+		<section id="dashboard" class="section">
+			<h2 class="text-2xl font-bold mb-4 text-center">Dashboard</h2>
+			<section id="features" class="mb-8">
+				<h2 class="text-2xl font-bold mb-4 text-center">Key Features</h2>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+					<div class="bg-white p-6 rounded-lg shadow-lg cursor-pointer" data-section="lessons">
+						<i class="fas fa-chalkboard-teacher icon mx-auto mb-4"></i>
+						<h3 class="text-xl font-bold mb-2">Interactive Lessons</h3>
+						<p class="text-gray-600">Practical examples and hands-on exercises.</p>
+					</div>
+					<div class="bg-white p-6 rounded-lg shadow-lg cursor-pointer" data-section="tests">
+						<i class="fas fa-tasks icon mx-auto mb-4"></i>
+						<h3 class="text-xl font-bold mb-2">Dynamic Tests</h3>
+						<p class="text-gray-600">Quizzes and assessments to test your knowledge.</p>
+					</div>
+	
+				</div>
+			</section>
+			<div class="bg-white p-8 rounded-lg shadow-lg">
+				<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+					<div class="text-center">
+						<h3 class="text-xl font-bold mb-2">Lessons Completed</h3>
+						<p class="text-4xl font-bold text-blue-600">5</p>
+					</div>
+					<div class="text-center">
+						<h3 class="text-xl font-bold mb-2">Quizzes Taken</h3>
+						<p class="text-4xl font-bold text-blue-600">3</p>
+					</div>
+					<div class="text-center">
+						<h3 class="text-xl font-bold mb-2">Total Score</h3>
+						<p class="text-4xl font-bold text-blue-600">85%</p>
+					</div>
+				</div>
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+					<div>
+						<canvas id="lessonsChart"></canvas>
+					</div>
+					<div>
+						<canvas id="quizzesChart"></canvas>
+					</div>
+				</div>
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<div>
+						<canvas id="scoreChart"></canvas>
+					</div>
+					<div>
+						<canvas id="progressChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Lessons Section -->
+		<section id="lessons" class="section">
+		<div class="subject-buttons">
+			<h2 class="text-2xl font-bold mb-4 text-center">Lessons</h2>
+		<button class="subject-button" data-subject="ABAP RICEFW">
+	<i class="fas fa-book-open text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP RICEFW</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP RICEFW</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP OO">
+	<i class="fas fa-code text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP OO</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP OO</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP BOPF">
+	<i class="fas fa-database text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP BOPF</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP BOPF</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP CRM">
+	<i class="fas fa-users text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP CRM</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP CRM</p>
+</button>
+
+<button class="subject-button" data-subject="SAP FIORI">
+	<i class="fas fa-mobile-alt text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP FIORI</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP FIORI</p>
+</button>
+
+<button class="subject-button" data-subject="SAP PI-CPI">
+	<i class="fas fa-sync-alt text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP PI-CPI</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP PI-CPI</p>
+</button>
+
+<button class="subject-button" data-subject="SAP BTP">
+	<i class="fas fa-cloud text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP BTP</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP BTP</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP CDS Views">
+	<i class="fas fa-database text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP CDS Views</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP CDS Views</p>
+</button>
+
+<button class="subject-button" data-subject="SAP HANA Modeling">
+	<i class="fas fa-chart-line text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP HANA Modeling</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP HANA Modeling</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP RAP">
+	<i class="fas fa-code-branch text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP RAP</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP RAP</p>
+</button>
+
+<button class="subject-button" data-subject="SAP BW/4HANA">
+	<i class="fas fa-chart-pie text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP BW/4HANA</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP BW/4HANA</p>
+</button>
+
+<button class="subject-button" data-subject="SAP S/4HANA Migration">
+	<i class="fas fa-plane-departure text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP S/4HANA Migration</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP S/4HANA Migration</p>
+</button>
+		</div>
+
+		</section>
+
+		
+		<section id="tests" class="section">
+	<!-- Tests 	<h2 class="text-2xl font-bold mb-4 text-center">ABAP Tests</h2>Section -->
+    <div id="messageContainer"></div>
+    
+    <div class="mb-4">
+        <label for="subjectSelect" class="block mb-2">Select Subject:</label>
+        <select id="subjectSelect" class="w-full p-2 border rounded">
+            <option value="">Select a subject</option>
+            <optgroup label="ABAP Basics">
+                <option value="Introduction_to_ABAP">Introduction to ABAP</option>
+                <option value="Data_Dictionary">Data Dictionary</option>
+                <option value="ABAP_Programming_Basics">ABAP Programming Basics</option>
+                <option value="ABAP_Reports">ABAP Reports</option>
+                <option value="Internal_Tables">Internal Tables</option>
+                <option value="Modularization_Techniques">Modularization Techniques</option>
+                <option value="ABAP_Data_Types">ABAP Data Types</option>
+                <option value="ABAP_Debugging">ABAP Debugging</option>
+                <option value="ALV_Reports">ALV Reports</option>
+            </optgroup>
+            <optgroup label="ABAP Object-Oriented">
+                <option value="Introduction_to_ABAP_OO">Introduction to ABAP OO</option>
+                <option value="Classes_and_Objects">Classes and Objects</option>
+                <option value="Inheritance">Inheritance</option>
+                <option value="Polymorphism">Polymorphism</option>
+                <option value="Interfaces">Interfaces</option>
+                <option value="Events">Events</option>
+                <option value="Exception_Handling">Exception Handling</option>
+                <option value="Singleton_Pattern">Singleton Pattern</option>
+                <option value="Factory_Pattern">Factory Pattern</option>
+                <option value="Advanced_OO_Concepts">Advanced OO Concepts</option>
+            </optgroup>
+            <optgroup label="ABAP RICEFW">
+                <option value="RICEFW_Overview">RICEFW Overview</option>
+                <option value="Reports_in_RICEFW">Reports in RICEFW</option>
+                <option value="Interfaces_in_RICEFW">Interfaces in RICEFW</option>
+                <option value="Conversions_in_RICEFW">Conversions in RICEFW</option>
+                <option value="Enhancements_in_RICEFW">Enhancements in RICEFW</option>
+                <option value="Forms_in_RICEFW">Forms in RICEFW</option>
+                <option value="Workflows_in_RICEFW">Workflows in RICEFW</option>
+            </optgroup>
+            <optgroup label="ABAP BOPF">
+                <option value="Introduction_to_BOPF">Introduction to BOPF</option>
+                <option value="BOPF_Architecture">BOPF Architecture</option>
+                <option value="BOPF_Meta_Model">BOPF Meta Model</option>
+                <option value="BOPF_Development_Tools">BOPF Development Tools</option>
+                <option value="BOPF_Queries">BOPF Queries</option>
+                <option value="Business_Configuration_Objects">Business Configuration Objects</option>
+                <option value="Testing_and_Support_in_BOPF">Testing and Support in BOPF</option>
+                <option value="Transaction_and_Log_Management">Transaction and Log Management</option>
+            </optgroup>
+            <optgroup label="ABAP CRM">
+                <option value="Introduction_to_CRM">Introduction to CRM</option>
+                <option value="CRM_Architecture">CRM Architecture</option>
+                <option value="CRM_Modules">CRM Modules</option>
+                <option value="CRM_Development_Tools">CRM Development Tools</option>
+                <option value="CRM_Configuration">CRM Configuration</option>
+                <option value="CRM_Testing">CRM Testing</option>
+                <option value="CRM_User_Interface">CRM User Interface</option>
+                <option value="Advanced_CRM_Concepts">Advanced CRM Concepts</option>
+            </optgroup>
+            <optgroup label="SAP FIORI">
+                <option value="Introduction_to_FIORI">Introduction to FIORI</option>
+                <option value="Setting_Up_FIORI_Launchpad">Setting Up FIORI Launchpad</option>
+                <option value="Developing_FIORI_Apps">Developing FIORI Apps</option>
+                <option value="Building_FIORI_Apps">Building FIORI Apps</option>
+                <option value="FIORI_Launchpad">FIORI Launchpad</option>
+                <option value="OData_Services">OData Services</option>
+                <option value="FIORI_Security">FIORI Security</option>
+                <option value="Extending_FIORI_Apps">Extending FIORI Apps</option>
+                <option value="FIORI_Performance_Optimization">FIORI Performance Optimization</option>
+                <option value="Advanced_FIORI_Concepts">Advanced FIORI Concepts</option>
+            </optgroup>
+            <optgroup label="SAP PI-CPI">
+                <option value="Introduction_to_SAP_CPI">Introduction to SAP CPI</option>
+                <option value="Architecture_of_SAP_CPI">Architecture of SAP CPI</option>
+                <option value="Integration_Patterns">Integration Patterns</option>
+                <option value="Configuration_in_SAP_PI">Configuration in SAP PI</option>
+                <option value="Configuration_in_SAP_CPI">Configuration in SAP CPI</option>
+                <option value="Message_Mapping">Message Mapping</option>
+                <option value="Error_Handling">Error Handling</option>
+                <option value="Monitoring_and_Administration">Monitoring and Administration</option>
+                <option value="Security_in_PI_CPI">Security in PI/CPI</option>
+                <option value="Advanced_CPI_Concepts">Advanced CPI Concepts</option>
+            </optgroup>
+            <optgroup label="SAP BTP">
+                <option value="Introduction_to_SAP_BTP">Introduction to SAP BTP</option>
+                <option value="SAP_BTP_Services">SAP BTP Services</option>
+                <option value="SAP_BTP_Architecture">SAP BTP Architecture</option>
+                <option value="SAP_BTP_Integration">SAP BTP Integration</option>
+                <option value="SAP_BTP_Security">SAP BTP Security</option>
+                <option value="SAP_BTP_Extension_Suite">SAP BTP Extension Suite</option>
+                <option value="SAP_BTP_Data_and_Analytics">SAP BTP Data and Analytics</option>
+                <option value="SAP_BTP_Development_Tools">SAP BTP Development Tools</option>
+                <option value="SAP_BTP_Application_Development">SAP BTP Application Development</option>
+                <option value="Advanced_SAP_BTP_Concepts">Advanced SAP BTP Concepts</option>
+            </optgroup>
+            <optgroup label="ABAP CDS Views">
+                <option value="Introduction_to_CDS_Views">Introduction to CDS Views</option>
+                <option value="CDS_View_Syntax">CDS View Syntax</option>
+                <option value="CDS_View_Annotations">CDS View Annotations</option>
+                <option value="CDS_View_Associations">CDS View Associations</option>
+                <option value="CDS_View_Extensions">CDS View Extensions</option>
+                <option value="CDS_View_Performance">CDS View Performance Optimization</option>
+            </optgroup>
+            <optgroup label="SAP HANA Modeling">
+                <option value="HANA_Modeling_Basics">HANA Modeling Basics</option>
+                <option value="HANA_Information_Views">HANA Information Views</option>
+                <option value="HANA_Calculation_Views">HANA Calculation Views</option>
+                <option value="HANA_Analytic_Privileges">HANA Analytic Privileges</option>
+                <option value="HANA_SQL_Scripts">HANA SQL Scripts</option>
+                <option value="HANA_Performance_Optimization">HANA Performance Optimization</option>
+            </optgroup>
+            <optgroup label="ABAP RAP">
+                <option value="RAP_Overview">RAP Overview</option>
+                <option value="RAP_Business_Objects">RAP Business Objects</option>
+                <option value="RAP_Behavior_Definition">RAP Behavior Definition</option>
+                <option value="RAP_Behavior_Implementation">RAP Behavior Implementation</option>
+                <option value="RAP_Business_Services">RAP Business Services</option>
+                <option value="RAP_UI_Integration">RAP UI Integration</option>
+            </optgroup>
+            <optgroup label="SAP BW/4HANA">
+                <option value="BW4HANA_Basics">BW/4HANA Basics</option>
+                <option value="BW4HANA_Modeling">BW/4HANA Modeling</option>
+                <option value="BW4HANA_Data_Acquisition">BW/4HANA Data Acquisition</option>
+                <option value="BW4HANA_Reporting">BW/4HANA Reporting</option>
+                <option value="BW4HANA_Administration">BW/4HANA Administration</option>
+                <option value="BW4HANA_Performance_Optimization">BW/4HANA Performance Optimization</option>
+            </optgroup>
+            <optgroup label="SAP S/4HANA Migration">
+                <option value="S4HANA_Migration_Strategy">S/4HANA Migration Strategy</option>
+                <option value="S4HANA_System_Conversion">S/4HANA System Conversion</option>
+                <option value="S4HANA_Data_Migration">S/4HANA Data Migration</option>
+                <option value="S4HANA_Custom_Code_Adaptation">S/4HANA Custom Code Adaptation</option>
+                <option value="S4HANA_Testing_Strategies">S/4HANA Testing Strategies</option>
+                <option value="S4HANA_Post_Migration_Activities">S/4HANA Post-Migration Activities</option>
+            </optgroup>
+        </select>
+    </div>
+     <div class="flex flex-wrap items-end space-x-4 mb-4">
+        <div class="flex-grow">
+            <label for="questionCount" class="block mb-2">Number of Questions:</label>
+            <input type="number" id="questionCount" min="5" max="45" value="10" class="w-full p-2 border rounded">
+        </div>
+        
+        <div class="flex-grow">
+            <label for="timerDuration" class="block mb-2">Timer Duration (minutes):</label>
+            <input type="number" id="timerDuration" min="5" max="120" value="30" class="w-full p-2 border rounded">
+        </div>
+        
+        <button class="generate-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Generate Test</button>
+        
+        <div class="flex items-center">
+            <span class="mr-2">Time Remaining:</span>
+            <span id="time" class="mr-2">00:00</span>
+            <button id="controlTimer" class="bg-gray-300 px-2 py-1 rounded">Start</button>
+        </div>
+    </div>
+    
+    <div class="questions-container mt-4"></div>
+</section>
+
+
+		<!-- Profile Section -->
+		<section id="profile" class="section">
+			<h2 class="text-2xl font-bold mb-4 text-center">Profile</h2>
+			<div class="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto">
+				<div class="text-center">
+					<i class="fas fa-user-circle text-6xl text-gray-400 mb-4"></i>
+					<h3 class="text-xl font-bold mb-2">John Doe</h3>
+					<p class="text-gray-600 mb-4">john.doe@example.com</p>
+					<button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Edit Profile</button>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+    <script type="module" src="scripts/app.js"></script>
+	
+    <script type="module" src="scripts/authValidation_abap.js"></script>
+    <script type="module" src="scripts/aula_abap.js"></script>
+    <script type="module" src="scripts/test_abap.js"></script>
+	</body>
+
+</html>

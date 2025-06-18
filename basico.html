@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/aulas.css">
+
+
+</head>
+<!-- partial:index.partial.html -->
+<body>
+ 
+  <div class="container mx-auto p-6 mt-24" >
+  	
+	<div class="subject-buttons">
+		<button class="subject-button" data-subject="ABAP RICEFW">
+	<i class="fas fa-book-open text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP RICEFW</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP RICEFW</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP OO">
+	<i class="fas fa-code text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP OO</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP OO</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP BOPF">
+	<i class="fas fa-database text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP BOPF</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP BOPF</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP CRM">
+	<i class="fas fa-users text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP CRM</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP CRM</p>
+</button>
+
+<button class="subject-button" data-subject="SAP FIORI">
+	<i class="fas fa-mobile-alt text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP FIORI</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP FIORI</p>
+</button>
+
+<button class="subject-button" data-subject="SAP PI-CPI">
+	<i class="fas fa-sync-alt text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP PI-CPI</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP PI-CPI</p>
+</button>
+
+<button class="subject-button" data-subject="SAP BTP">
+	<i class="fas fa-cloud text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP BTP</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP BTP</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP CDS Views">
+	<i class="fas fa-database text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP CDS Views</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP CDS Views</p>
+</button>
+
+<button class="subject-button" data-subject="SAP HANA Modeling">
+	<i class="fas fa-chart-line text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP HANA Modeling</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP HANA Modeling</p>
+</button>
+
+<button class="subject-button" data-subject="ABAP RAP">
+	<i class="fas fa-code-branch text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">ABAP RAP</h3>
+	<p class="text-gray-600 mb-4">Lessons for ABAP RAP</p>
+</button>
+
+<button class="subject-button" data-subject="SAP BW/4HANA">
+	<i class="fas fa-chart-pie text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP BW/4HANA</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP BW/4HANA</p>
+</button>
+
+<button class="subject-button" data-subject="SAP S/4HANA Migration">
+	<i class="fas fa-plane-departure text-blue-600 text-4xl mb-4"></i>
+	<h3 class="text-xl font-bold mb-2">SAP S/4HANA Migration</h3>
+	<p class="text-gray-600 mb-4">Lessons for SAP S/4HANA Migration</p>
+</button>
+		</div>
+
+  </div>      
+  
+    <div class="chat-container" style="display: none;">
+      <button class="back-button"><i class="fas fa-arrow-left"></i> Back</button>
+      <div class="chat-messages"></div>
+      <div class="chat-input">
+        <input type="text" placeholder="Digite sua dúvida aqui..." />
+        <button><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+			<footer class="footer">
+				<nav class="footer-nav">
+
+         <a href="tutorial.html"><i class="fas fa-info-circle"></i>Tutorial</a>
+		<a  href="homepage.html" class="nav-link px-4 py-2"><i class="fas fa-chart-line"></i> Dashboard</a>
+		<a href="basico.html" class="nav-link px-4 py-2"><i class="fas fa-book-open"></i> Lessons</a>
+	<a href="teste.html" class="nav-link px-4 py-2"><i class="fas fa-pencil-alt"></i> Tests</a>
+		</nav>
+	</footer>
+  
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- partial -->
+		<script  type="module" src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+  <script  type="module" src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
+  <script  type="module" src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script type="module" src="scripts/aulas.js"></script>
+	
+
+</body>
+</html>

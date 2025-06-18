@@ -1,0 +1,112 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <link rel="manifest" href="/manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPABAP MASTER IA - Register & Login</title>
+
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles/login.css">
+   
+    <script type="module" src="scripts/firebaseauth_abap.js"></script>
+</head>
+<body>
+  <div id="intro-container">
+     
+    <div id="sap-icon" class="intro-element">🔷</div>
+        <div id="enem-text" class="intro-element">SUPABAP WISE</div>
+        <div id="ai-text" class="intro-element">Artificial intelligence</div>
+          <div id="sap-text" class="intro-element">SAP Development</div>
+        <img id="ai-image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNjQgNjQiPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0zMiA2QzE3LjY2NCA2IDYgMTcuNjY0IDYgMzJzMTEuNjY0IDI2IDI2IDI2IDI2LTExLjY2NCAyNi0yNlM0Ni4zMzYgNiAzMiA2em0wIDQ4Yy0xMi4xNTIgMC0yMi05Ljg0OC0yMi0yMnM5Ljg0OC0yMiAyMi0yMiAyMiA5Ljg0OCAyMiAyMi05Ljg0OCAyMi0yMiAyMnoiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMzIgMjJjLTUuNTIzIDAtMTAgNC40NzctMTAgMTBzNC40NzcgMTAgMTAgMTAgMTAtNC40NzcgMTAtMTAtNC40NzctMTAtMTAtMTB6bTAgMTZjLTMuMzE0IDAtNi0yLjY4Ni02LTZzMi42ODYtNiA2LTYgNiAyLjY4NiA2IDYtMi42ODYgNi02IDZ6Ii8+PHBhdGggZmlsbD0iI0ZGRiIgZD0iTTMyIDE0Yy05Ljk0MSAwLTE4IDguMDU5LTE4IDE4czguMDU5IDE4IDE4IDE4IDE4LTguMDU5IDE4LTE4LTguMDU5LTE4LTE4LTE4em0wIDMyYy03LjcyIDAtMTQtNi4yOC0xNC0xNHM2LjI4LTE0IDE0LTE0IDE0IDYuMjggMTQgMTQtNi4yOCAxNC0xNCAxNHoiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMzIgMThjLTcuNzIgMC0xNCA2LjI4LTE0IDE0czYuMjggMTQgMTQgMTQgMTQtNi4yOCAxNC0xNC02LjI4LTE0LTE0LTE0em0wIDI0Yy01LjUxNCAwLTEwLTQuNDg2LTEwLTEwczQuNDg2LTEwIDEwLTEwIDEwIDQuNDg2IDEwIDEwLTQuNDg2IDEwLTEwIDEweiIvPjwvc3ZnPg==" alt="AI Icon" class="intro-element">
+    
+    <img id="ai-image" class="intro-element" src="path_to_sap_or_abap_icon.svg" alt="SAP Icon">
+    <div id="subject-abap" class="intro-element">ABAP Programming</div>
+    <div id="subject-fiori" class="intro-element">SAP Fiori</div>
+    <div id="subject-hana" class="intro-element">SAP HANA</div>
+    <div id="subject-btp" class="intro-element">SAP BTP</div>
+</div>
+    </div>
+
+    <canvas id="animation-canvas"></canvas>
+
+    <div class="container" id="login-container">
+
+     <div id="signIn">
+    <h2 class="form-title">SUPABAP E-Learning</h2>
+    <form method="post" action="">
+        <div id="signInMessage" class="messageDiv" style="display:none;"></div>
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Password" required>
+        </div>
+        <p class="recover">
+            <a href="#" id="resetPasswordLink">Recover Password</a>
+        </p>
+        <button class="btn" id="submitSignIn">Sign In</button>
+    </form>
+
+    <div class="links">
+        <p>Don't have an account?</p>
+    </div>
+    <button id="signUpButton">Create Account</button>
+</div>
+
+<div id="signup" style="display:none;">
+    <h1 class="form-title">Registration</h1>
+    <form method="post" action="">
+        <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="fName" placeholder="First Name" required>
+            <label for="fname">First Name</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="lName" placeholder="Last Name" required>
+            <label for="lName">Last Name</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="rEmail" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="rPassword" placeholder="Password" required>
+        </div>
+        <button class="btn" id="submitSignUp">Create Account</button>
+    </form>
+
+    <div class="links">
+        <p>Already have an account?</p>
+        <button id="signInButton">Sign In</button>
+    </div>
+</div>
+
+<div id="resetPasswordForm" style="display:none;">
+    <h1 class="form-title">Reset Password</h1>
+    <form method="post" action="">
+        <div id="resetMessage" class="messageDiv" style="display:none;"></div>
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="resetEmail" placeholder="Enter your email" required>
+        </div>
+        <button class="btn" id="resetPassword">Send Reset Email</button>
+    </form>
+    <div class="links">
+        <button id="backToSignIn">Back to Login</button>
+    </div>
+</div>
+
+<div id="tagline">
+    <p><h4>Prepare for SAP development with the power of Artificial Intelligence.</p>
+    <p>Study in a personalized way and maximize your potential.</h4></p>
+</div>
+<script type="module" src="scripts/login_abap.js"></script>
+   
+</body>
+</html>

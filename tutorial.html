@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="styles/homepage.css"> 
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%; 
+      margin: 0 auto;
+      width: 100%;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .section-content {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #f7f7f7;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .section-content h2 {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+      color: #003366;
+    }
+    .section-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      color: #333;
+    }
+    .section-content ul {
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+    .section-content li {
+      margin-bottom: 8px;
+    }
+    h1 {
+      background-color: #42b2f9; 
+      color: #ffffff; 
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+    .tip {
+      background-color: #e6f3ff;
+      border-left: 4px solid #003366;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .language-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #003366;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .section-content h2 {
+        font-size: 1.4rem;
+      }
+      .section-content p, .section-content li {
+        font-size: 1rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .section-content h2 {
+        font-size: 1.3rem;
+      }
+      .section-content p, .section-content li {
+        font-size: 0.9rem;
+      }
+      h1 {
+        font-size: 1.4rem; 
+      }
+    }
+    .terms-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    .terms-link a {
+      color: #003366;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  
+ <h1 id="tutorial-title">Detailed Tutorial - ABAP Lessons and Tests</h1>
+
+<div class="container">
+  <section class="section-content">
+    <h2 id="section-1-title">1. Interactive ABAP Lessons</h2>
+    <p id="section-1-text">
+      The <strong>Lessons</strong> section offers an interactive and personalized learning environment for the most important ABAP modules and concepts, such as ABAP RICEFW, ABAP OO, and SAP FIORI.
+    </p>
+    <ul id="section-1-list">
+      <li>ABAP RICEFW</li>
+      <li>ABAP OO</li>
+      <li>ABAP BOPF</li>
+      <li>SAP FIORI</li>
+      <li>SAP BTP</li>
+    </ul>
+  </section>
+
+  <section class="section-content">
+    <h2 id="section-2-title">2. Personalized Test Practice</h2>
+    <p id="section-2-text">
+      The <strong>Tests</strong> section allows practice with ABAP questions, covering topics such as debugging, ALV reports, and object-oriented ABAP module development.
+    </p>
+    <ul id="section-2-list">
+      <li>ABAP Debugging</li>
+      <li>ALV Reports</li>
+      <li>Modularization Techniques</li>
+      <li>Classes and Objects</li>
+      <li>CDS Views</li>
+    </ul>
+  </section>
+</div>
+  <div class="terms-link">
+    <a href="terms.html">Application Terms of Use</a>
+  </div>
+  </div>
+
+			<footer class="footer">
+				<nav class="footer-nav">
+
+         <a href="tutorial.html"><i class="fas fa-info-circle"></i>Tutorial</a>
+		<a  href="homepage.html" class="nav-link px-4 py-2"><i class="fas fa-chart-line"></i> Dashboard</a>
+		<a href="basico.html" class="nav-link px-4 py-2"><i class="fas fa-book-open"></i> Lessons</a>
+	<a href="teste.html" class="nav-link px-4 py-2"><i class="fas fa-pencil-alt"></i> Tests</a>
+		</nav>
+	</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+  const setupFooterLinks = () => {
+  const footerLinks = document.querySelectorAll(".footer-nav a");
+  footerLinks.forEach((link) => {
+    if (link.href === window.location.href) {
+      link.classList.add("active");
+    }
+    link.addEventListener("click", () => {
+      footerLinks.forEach((l) => l.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
+};
+ 
+ </script>
+ 
+</body>
+</html>

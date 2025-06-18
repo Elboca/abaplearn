@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/homepage.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+ 
+  <header class="bg-pink-500 p-1 shadow-md fixed top-0 w-full z-50">
+   
+
+   
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-book-reader text-white text-2xl"></i>
+                <h1 class="text-1xl font-bold text-white">SUPABAP - Artificial Intelligence</h1>
+            </div>
+            <!-- Botão do menu para dispositivos móveis -->
+            <button id="menu-toggle" aria-label="Toggle Menu" aria-controls="menu" class="text-white text-2xl md:hidden focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Navegação -->
+            <nav id="menu" class="hidden md:flex">
+                <ul class="flex flex-col md:flex-row md:space-x-4">
+                    <li><a  href="homepage.html" class="nav-link px-4 py-2"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="aulas.html" class="nav-link px-4 py-2"><i class="fas fa-book-open"></i> Lessons</a></li>
+                    <li><a href="teste.html" class="nav-link px-4 py-2"><i class="fas fa-pencil-alt"></i> Tests</a></li>
+                <li><a  href="tutorial.html" class="nav-link px-4 py-2"><i class="fas fa-info-circle"></i> Tutorial</a></li>
+                </ul>
+            </nav>
+        </div>
+  </header>
+
+  <div class="container mx-auto p-6 mt-24">
+    <!-- Seção de Perfil do Usuário -->
+    <div class="card">
+      <div class="card-header">
+        <h2 id="profile-title">Perfil</h2>
+      </div>
+      <div class="card-body">
+        <div class="profile-info">
+          <div class="profile-avatar" id="profileAvatar">
+            <!-- Avatar será inserido dinamicamente -->
+          </div>
+          <h3>
+            <span id="loggedUserFName"></span>
+            <span id="loggedUserLName"></span>
+          </h3>
+          <p id="loggedUserEmail"></p>
+        </div>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <p><strong id="daily-messages-label">Mensagens Diárias</strong></p>
+            <p id="loggedUserMens"></p>
+          </div>
+        </div>
+        <button id="logout">Logout</button>
+      </div>
+
+      <!-- Seção de Pontuação por Área -->
+      <div class="card">
+        <div class="card-header">
+          <h2 id="score-area-title">Pontuação por Área</h2>
+        </div>
+        <div class="card-body">
+          <div class="score-chart-container">
+            <canvas id="scoreChart" width="400" height="200"></canvas>
+          </div>
+          <div class="error-analysis" id="errorAnalysis"></div>
+          <button id="analyzeBtn" class="analyze-btn" id="analyze-performance-btn">Analisar Performance</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="analysisModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="analysis-title">Análise de Desempenho</h2>
+      <div id="analysisContent"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.js"></script>
+  <script type="module" src="scripts/homepage.js" defer></script>
+
+  <script>
+    const languageToggle = document.getElementById('language-toggle');
+    const content = {
+      pt: {
+        profileTitle: "Perfil",
+        dailyMessagesLabel: "Mensagens Diárias",
+        scoreAreaTitle: "Pontuação por Área",
+        analyzePerformanceBtn: "Analisar Performance",
+        analysisTitle: "Análise de Desempenho"
+      },
+      en: {
+        profileTitle: "Profile",
+        dailyMessagesLabel: "Daily Messages",
+        scoreAreaTitle: "Score by Area",
+        analyzePerformanceBtn: "Analyze Performance",
+        analysisTitle: "Performance Analysis"
+      }
+    };
+
+    languageToggle.addEventListener('click', () => {
+      const currentLang = languageToggle.textContent === 'English' ? 'en' : 'pt';
+      const newLang = currentLang === 'en' ? 'pt' : 'en';
+
+      document.getElementById('profile-title').textContent = content[newLang].profileTitle;
+      document.getElementById('daily-messages-label').textContent = content[newLang].dailyMessagesLabel;
+      document.getElementById('score-area-title').textContent = content[newLang].scoreAreaTitle;
+      document.getElementById('analyze-performance-btn').textContent = content[newLang].analyzePerformanceBtn;
+      document.getElementById('analysis-title').textContent = content[newLang].analysisTitle;
+
+      languageToggle.textContent = newLang === 'en' ? 'English' : 'Português';
+    });
+  </script>
+</body>
+
+</html>
