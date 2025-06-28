@@ -25,7 +25,7 @@ const apiKey = "sk-svcacct-rCZJ4KlGZ1OVeWDVXCjKcX8zkZ7FcYwGd4ooDZ6m1WIrc2M3IgGJj
 // Main Functions
 const fetchUserData = async (userId) => {
   try {
-    const docRef = doc(db, "Users_Finn", userId);
+    const docRef = doc(db, "Users_Abap", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const userData = docSnap.data();
@@ -38,68 +38,54 @@ const fetchUserData = async (userId) => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', function () {
-  const navLinks = document.querySelectorAll('.nav-link');
-  const menuToggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('menu');
-
-  // Toggle menu visibility (abre/fecha no mobile)
-  menuToggle.addEventListener('click', () => {
-    menu.classList.toggle('show');
-  });
-
-  // Handle navigation
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      // Fecha o menu ao clicar no link (apenas no mobile)
-      if (window.innerWidth < 768) {
-        menu.classList.add('hidden');
-      }
-    });
-  });
-
-  // Fecha o menu quando clicar fora dele no mobile
-  document.addEventListener('click', (event) => {
-    const isClickInsideMenu = menu.contains(event.target);
-    const isClickOnMenuToggle = menuToggle.contains(event.target);
-
-    if (!isClickInsideMenu && !isClickOnMenuToggle && window.innerWidth < 768) {
-      menu.classList.add('hidden');
-	  }
-  });
-});
-
 const updateUIWithUserData = (userData) => {
   document.getElementById('loggedUserFName').innerText = userData.firstName;
   document.getElementById('loggedUserEmail').innerText = userData.email;
   document.getElementById('loggedUserLName').innerText = userData.lastName;
   document.getElementById('loggedUserMens').innerText = userData.saldo_mens;
-
+ 
   const profileAvatar = document.getElementById('profileAvatar');
   profileAvatar.innerHTML = userData.photo ? `<img src="${userData.photo}" width="40%" style="border-radius: 50%" alt="Avatar">` : '<i class="fas fa-user-circle"></i>';
 };
 
+
+const analyzePerformance = async (userId) => {
+  try {
+    const questionsText = await fetchQuestionData(userId);
+    if (!questionsText) {
+      alert("No questions available for analysis.");
+      return;
+    }
+
+    const analysisText = await getAnalysisFromAI(questionsText);
+    displayAnalysis(analysisText);
+  } catch (error) {
+    console.error("Error generating performance analysis:", error);
+    alert("An error occurred while generating the performance analysis. Please try again.");
+  }
+};
+
 const fetchQuestionData = async (userId) => {
   const subjectMap = {
-    "SAP S/4HANA Universal Journal": "sapUniversalJournal",
-    "Business Partner in SAP S/4HANA": "sapBusinessPartner",
-    "Material Ledger in SAP S/4HANA": "sapMaterialLedger",
-    "Financial Closing in SAP S/4HANA": "sapFinancialClosing",
-    "Treasury and Risk Management in SAP S/4HANA": "sapTreasuryRiskManagement",
-    "SAP Central Finance": "sapCentralFinance",
-    "New General Ledger in SAP S/4HANA": "sapNewGL",
-    "SAP Group Reporting": "sapGroupReporting",
-    "SAP Analytics Cloud Integration": "sapAnalyticsCloud",
-    "Revenue Accounting and Reporting (RAR)": "sapRAR",
-    "Extended Warehouse Management (EWM)": "sapEWM",
-    "Credit Management in SAP S/4HANA": "sapCreditManagement",
-    "Public Sector Management (PSM)": "sapPSM"
+"ABAP Basics": "abapBasics",
+    "ABAP OO": "abapOO",
+    "ABAP RICEFW": "abapRICEFW",
+    "ABAP BOPF": "abapBOPF",
+    "ABAP CRM": "abapCRM",
+    "SAP FIORI": "sapFiori",
+    "SAP PI-CPI": "sapPICPI",
+    "SAP BTP": "sapBTP",
+    "ABAP CDS Views": "abapCDSViews",
+    "SAP HANA Modeling": "sapHANAModeling",
+    "ABAP RAP": "abapRAP",
+    "SAP BW/4HANA": "sapBW4HANA",
+    "SAP S/4HANA Migration": "sapS4HANAMigration"
   };
 
   let questionsText = "";
 
   for (const [subjectName, firestoreField] of Object.entries(subjectMap)) {
-    const subjectDocRef = doc(db, "Users_Finn", userId, "FinnData", firestoreField);
+    const subjectDocRef = doc(db, "Users_Abap", userId, "AbapData", firestoreField);
     const subjectDocSnap = await getDoc(subjectDocRef);
 
     if (subjectDocSnap.exists()) {
@@ -115,17 +101,17 @@ const fetchQuestionData = async (userId) => {
 
 const processSubjectData = (data, subjectName) => {
   let text = `${subjectName}:\n`;
-  const questoes = data.questoes || [];
+  const questions = data.questoes || [];
 
-  questoes.forEach(questao => {
-    const { enunciado, alternativas, correta, errada } = questao;
+  questions.forEach(question => {
+    const { enunciado, alternativas, correta, errada } = question;
     text += `Question: ${enunciado}\n`;
     text += `Alternatives: ${Object.entries(alternativas).map(([key, value]) => `${key}: ${value}`).join(", ")}\n`;
-    text += `Correct answer: ${correta}, Wrong answer: ${errada}\n\n`;
+    text += `Correct answer: ${correta}, Incorrect answer: ${errada}\n\n`;
   });
 
   text += `Total Correct Answers: ${data.totalCorretas || 0}\n`;
-  text += `Total Wrong Answers: ${data.totalErradas || 0}\n\n`;
+  text += `Total Incorrect Answers: ${data.totalErradas || 0}\n\n`;
 
   return text;
 };
@@ -142,7 +128,7 @@ const getAnalysisFromAI = async (questionsText) => {
       messages: [
         {
           role: "user",
-          content: `Analyze performance on the following questions: ${questionsText}`
+          content: `Analyze the performance in the following questions: ${questionsText}`
         }
       ],
       max_tokens: 1500,
@@ -167,9 +153,10 @@ const displayAnalysis = (analysisText) => {
     modal.style.display = "block";
   } else {
     console.error("Modal elements not found.");
-    alert("Internal error: could not display analysis.");
+    alert("Internal error: unable to display the analysis.");
   }
 };
+
 
 const setupEventListeners = () => {
   const logoutButton = document.getElementById('logout');
@@ -204,7 +191,18 @@ const handleLogout = () => {
     });
 };
 
-
+const setupFooterLinks = () => {
+  const footerLinks = document.querySelectorAll(".footer-nav a");
+  footerLinks.forEach((link) => {
+    if (link.href === window.location.href) {
+      link.classList.add("active");
+    }
+    link.addEventListener("click", () => {
+      footerLinks.forEach((l) => l.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
+};
 
 const setupModalClose = () => {
   const closeBtn = document.querySelector('.close');
@@ -225,19 +223,19 @@ const setupModalClose = () => {
 async function loadAndDisplayChart(userId) {
   console.log("Starting loadAndDisplayChart for userId:", userId);
   const subjectMap = {
-    "SAP S/4HANA Universal Journal": "sapUniversalJournal",
-    "Business Partner in SAP S/4HANA": "sapBusinessPartner",
-    "Material Ledger in SAP S/4HANA": "sapMaterialLedger",
-    "Financial Closing in SAP S/4HANA": "sapFinancialClosing",
-    "Treasury and Risk Management in SAP S/4HANA": "sapTreasuryRiskManagement",
-    "SAP Central Finance": "sapCentralFinance",
-    "New General Ledger in SAP S/4HANA": "sapNewGL",
-    "SAP Group Reporting": "sapGroupReporting",
-    "SAP Analytics Cloud Integration": "sapAnalyticsCloud",
-    "Revenue Accounting and Reporting (RAR)": "sapRAR",
-    "Extended Warehouse Management (EWM)": "sapEWM",
-    "Credit Management in SAP S/4HANA": "sapCreditManagement",
-    "Public Sector Management (PSM)": "sapPSM"
+"ABAP Basics": "abapBasics",
+    "ABAP OO": "abapOO",
+    "ABAP RICEFW": "abapRICEFW",
+    "ABAP BOPF": "abapBOPF",
+    "ABAP CRM": "abapCRM",
+    "SAP FIORI": "sapFiori",
+    "SAP PI-CPI": "sapPICPI",
+    "SAP BTP": "sapBTP",
+    "ABAP CDS Views": "abapCDSViews",
+    "SAP HANA Modeling": "sapHANAModeling",
+    "ABAP RAP": "abapRAP",
+    "SAP BW/4HANA": "sapBW4HANA",
+    "SAP S/4HANA Migration": "sapS4HANAMigration"
   };
 
   const chartData = {
@@ -249,41 +247,42 @@ async function loadAndDisplayChart(userId) {
         backgroundColor: 'rgba(76, 175, 80, 0.8)',
       },
       {
-        label: 'Wrong',
+        label: 'Incorrect',
         data: [],
         backgroundColor: 'rgba(244, 67, 54, 0.8)',
       }
     ]
   };
+  
   let hasData = false;
   try {
     for (const [subjectName, field] of Object.entries(subjectMap)) {
       console.log(`Fetching data for ${subjectName}`);
-      const docRef = doc(db, "Users_Finn", userId, "FinnData", field);
+      const docRef = doc(db, "Users_Abap", userId, "AbapData", field);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
         console.log(`Raw data for ${subjectName}:`, data);
         
-        let totalCorretas = 0;
-        let totalErradas = 0;
+        let totalCorrect = 0;
+        let totalIncorrect = 0;
 
         // Process each question in the array
-        data.questoes?.forEach(questao => {
-          console.log(`Processing question:`, questao);
-          if (isCorrect(questao.correta)) {
-            totalCorretas++;
-          } else if (isCorrect(questao.errada)) {
-            totalErradas++;
+        data.questoes?.forEach(question => {
+          console.log(`Processing question:`, question);
+          if (isCorrect(question.correta)) {
+            totalCorrect++;
+          } else if (isCorrect(question.errada)) {
+            totalIncorrect++;
           }
         });
         
-        console.log(`${subjectName}: Correct = ${totalCorretas}, Wrong = ${totalErradas}, Total = ${data.questoes?.length || 0}`);
+        console.log(`${subjectName}: Correct = ${totalCorrect}, Incorrect = ${totalIncorrect}, Total = ${data.questoes?.length || 0}`);
         
-        chartData.datasets[0].data.push(totalCorretas);
-        chartData.datasets[1].data.push(totalErradas);
+        chartData.datasets[0].data.push(totalCorrect);
+        chartData.datasets[1].data.push(totalIncorrect);
         
-        if (totalCorretas > 0 || totalErradas > 0) hasData = true;
+        if (totalCorrect > 0 || totalIncorrect > 0) hasData = true;
       } else {
         console.log(`Data not found for ${subjectName}`);
         chartData.datasets[0].data.push(0);
@@ -298,7 +297,7 @@ async function loadAndDisplayChart(userId) {
       return;
     }
     
-    const ctx = document.getElementById('scoreChart');
+    const ctx = document.getElementById('scoreChart')?.getContext('2d');
     if (ctx) {
       new Chart(ctx, {
         type: 'bar',
@@ -324,12 +323,40 @@ async function loadAndDisplayChart(userId) {
     } else {
       console.error("Element 'scoreChart' not found");
     }
+    
+    const ctxQuizzes = document.getElementById('exercisesChart')?.getContext('2d');
+    if (ctxQuizzes) {
+      const exercisesChart = new Chart(ctxQuizzes, {
+        type: 'line',
+        data: chartData,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            }
+          }
+        }
+      });
+    } else {
+      console.error("Element 'exercisesChart' not found");
+    }
   } catch (error) {
     console.error("Error loading and displaying the chart:", error);
   }
-}
+}  
 
-// Auxiliary function to check if an answer is correct
+
+// Helper function to check if a response is correct
 function isCorrect(value) {
   if (typeof value === 'string') {
     return value.toLowerCase() === 'true' || value === '1';
@@ -351,18 +378,20 @@ async function initializeUserData(user) {
     }
   } else {
     console.log("No authenticated user");
+    window.location.href = 'index.html';
     // Redirect to login page or show appropriate message
-     window.location.href = 'index.html';
   }
 }
 
-// Main Initialization
+
+
+// Main initialization
 document.addEventListener('DOMContentLoaded', () => {
   console.log("DOMContentLoaded event triggered");
   console.log("Chart.js available:", typeof Chart !== 'undefined');
 
   if (typeof Chart === 'undefined') {
-    console.error("Chart.js is not loaded. Please ensure the library is included correctly.");
+    console.error("Chart.js is not loaded. Check if the library is included correctly.");
     return;
   }
 
@@ -372,8 +401,8 @@ document.addEventListener('DOMContentLoaded', () => {
       initializeUserData(user);
     } else {
       console.log("No authenticated user");
+      window.location.href = 'index.html';
       // Here you can add logic to redirect to the login page
-       window.location.href = 'index.html';
     }
     setupEventListeners();
   });
