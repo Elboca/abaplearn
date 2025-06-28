@@ -21,9 +21,9 @@ const db = getFirestore(app);
 
 console.log('Firebase initialized:', app);
 // Function to check if the page is accessed via Android WebView
-function isAndroidWebView() {
+//function isAndroidWebView() {
   // Using Option 2: Checking for the injected variable
-  return window.isAndroidWebView === true;
+ // return window.isAndroidWebView === true;
 }
 
 // Corrected checkAuthState function
@@ -35,12 +35,12 @@ export async function checkAuthState() {
       window.location.href = '/index.html';
       reject(new Error('User not authenticated.'));
     } else if (!isAndroidWebView()) {
-      console.log('Accessing outside of Android WebView, redirecting.');
-      window.location.href = '/index.html';
-      reject(new Error('Accessing outside of Android WebView.'));
+     // console.log('Accessing outside of Android WebView, redirecting.');
+    //  window.location.href = '/index.html';
+    //  reject(new Error('Accessing outside of Android WebView.'));
     } else {
-      console.log('User authenticated:', user.uid);
-      resolve(user.uid);
+    //  console.log('User authenticated:', user.uid);
+    //  resolve(user.uid);
     }
   });
 }
