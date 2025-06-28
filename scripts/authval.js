@@ -24,7 +24,7 @@ console.log('Firebase initialized:', app);
 //function isAndroidWebView() {
   // Using Option 2: Checking for the injected variable
  // return window.isAndroidWebView === true;
-}
+//}
 
 // Corrected checkAuthState function
 export async function checkAuthState() {
