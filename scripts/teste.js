@@ -1,5 +1,3 @@
-import { checkAuthState, checkSaldoMensagens, saveSimuladoResult } from './authValidation_simp.js';
-
 // Elementos do DOM
 const generateButton = document.querySelector(".generate-button");
 const questionsContainer = document.querySelector(".questions-container");
@@ -8,49 +6,47 @@ const timerDurationInput = document.getElementById("timerDuration");
 const timerDisplay = document.getElementById("time");
 const controlTimerButton = document.getElementById("controlTimer");
 const subjectSelect = document.getElementById("subjectSelect");
-const messageContainer = document.getElementById('messageContainer') || document.createElement('div');
-messageContainer.id = 'messageContainer';
-document.body.appendChild(messageContainer);
+const messageContainer = document.getElementById('messageContainer');
 
 // Variáveis de estado
 let selectedSubject = "";
 let timer;
 let seconds = 0;
 let timerRunning = false;
-let currentUserId = null;
 let currentQuestions = [];
+
+// Chave da API - EM PRODUÇÃO MOVER PARA BACKEND!
+const apiKey = "sk-svcacct-rCZJ4KlGZ1OVeWDVXCjKcX8zkZ7FcYwGd4ooDZ6m1WIrc2M3IgGJj6urQEQhMJT3BlbkFJeP4BeVA70sjes2-6AlD3qthVL69vdrjSSQ-oexFAy0sfebFHexHQ59hMSgxJQA";
 
 // Configuração inicial
 document.addEventListener('DOMContentLoaded', initializeApp);
 
 async function initializeApp() {
     try {
-        showLoading("Verifying authentication...");
+        displayMessage("Checking authentication...", 'info');
         
-        currentUserId = await checkAuthState();
-        if (!currentUserId) {
+        // Verificação de autenticação
+        const isAuthenticated = await checkAuthState();
+        if (!isAuthenticated) {
             throw new Error("User not authenticated");
         }
         
-        const hasSaldo = await checkSaldoMensagens(currentUserId);
-        if (!hasSaldo) {
-            disableGenerateButton("Insufficient message balance");
-        }
-        
-        setupEventListeners();
         setupSubjectSelect();
-        hideLoading();
+        setupEventListeners();
+        
+        displayMessage("Ready to start. Select a subject!", 'success');
     } catch (error) {
         console.error('Initialization error:', error);
-        showError("Please login to access this feature", () => {
+        displayMessage("Authentication failed. Redirecting to login...", 'error');
+        setTimeout(() => {
             window.location.href = '/index.html';
-        });
+        }, 3000);
     }
 }
 
 function setupEventListeners() {
-    subjectSelect.addEventListener("change", () => {
-        selectedSubject = subjectSelect.value;
+    subjectSelect.addEventListener("change", (e) => {
+        selectedSubject = e.target.value;
     });
 
     generateButton.addEventListener("click", handleGenerateClick);
@@ -80,54 +76,74 @@ function setupSubjectSelect() {
 
 async function handleGenerateClick() {
     try {
-        currentUserId = await checkAuthState();
-        if (!currentUserId) {
-            throw new Error("Session expired");
-        }
-
         if (!selectedSubject) {
-            throw new Error("Please select a subject first");
+            displayMessage("Please select a subject first", 'error');
+            return;
         }
         
         const questionCount = parseInt(questionCountInput.value);
-        if (isNaN(questionCount) || questionCount < 5 || questionCount > 30) {
-            throw new Error("Please choose between 5 and 30 questions");
+        if (isNaN(questionCount)) {
+            displayMessage("Invalid number of questions", 'error');
+            return;
+        }
+        
+        if (questionCount < 5 || questionCount > 30) {
+            displayMessage("Please choose between 5 and 30 questions", 'error');
+            return;
+        }
+        
+        // Verificar saldo de mensagens
+        const hasSaldo = await checkSaldoMensagens();
+        if (!hasSaldo) {
+            throw new Error("Insufficient message balance");
         }
         
         await generateExercises(questionCount);
+        
         startTimer();
         controlTimerButton.textContent = "Pause";
+        
     } catch (error) {
-        console.error("Generation error:", error);
-        showError(error.message);
+        console.error("Generate error:", error);
+        displayMessage(error.message || "Error generating exercises", 'error');
     }
 }
 
 function handleTimerControl() {
-    switch (controlTimerButton.textContent) {
-        case "Start":
-            startTimer();
-            controlTimerButton.textContent = "Pause";
-            break;
-        case "Pause":
-            pauseTimer();
-            controlTimerButton.textContent = "Continue";
-            break;
-        case "Continue":
-            resumeTimer();
-            controlTimerButton.textContent = "Pause";
-            break;
+    if (!timerRunning && controlTimerButton.textContent === "Start") {
+        startTimer();
+        controlTimerButton.textContent = "Pause";
+    } else if (timerRunning && controlTimerButton.textContent === "Pause") {
+        pauseTimer();
+        controlTimerButton.textContent = "Continue";
+    } else if (!timerRunning && controlTimerButton.textContent === "Continue") {
+        resumeTimer();
+        controlTimerButton.textContent = "Pause";
     }
 }
 
-// Timer Functions
+// Funções do Timer
 function startTimer() {
-    if (!timerRunning) {
-        clearInterval(timer);
-        seconds = parseInt(timerDurationInput.value) * 60 || 0;
-        timer = setInterval(updateTimer, 1000);
-        timerRunning = true;
-    }
+    if (timerRunning) return;
+    
+    clearInterval(timer);
+    seconds = parseInt(timerDurationInput.value) * 60 || 1800;
+    timerRunning = true;
+    
+    updateTimerDisplay();
+    
+    timer = setInterval(() => {
+        seconds--;
+        updateTimerDisplay();
+        
+        if (seconds <= 0) {
+            clearInterval(timer);
+            timerRunning = false;
+            displayMessage("Time's up!", 'info');
+            controlTimerButton.textContent = "Start";
+            handleSubmit();
+        }
+    }, 1000);
 }
 
 function pauseTimer() {
@@ -136,49 +152,22 @@ function pauseTimer() {
 }
 
 function resumeTimer() {
-    if (!timerRunning) {
-        timer = setInterval(updateTimer, 1000);
-        timerRunning = true;
-    }
+    if (timerRunning) return;
+    startTimer();
 }
 
-function updateTimer() {
-    if (seconds > 0) {
-        seconds--;
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        timerDisplay.textContent = `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-    } else {
-        clearInterval(timer);
-        timerRunning = false;
-        showMessage("Time's up!", 'info');
-        controlTimerButton.textContent = "Start";
-        autoSubmitAnswers();
-    }
+function updateTimerDisplay() {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    timerDisplay.textContent = `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
-// Exercise Generation
+// Geração de Exercícios com OpenAI
 async function generateExercises(questionCount) {
     try {
-        questionsContainer.innerHTML = "<div class='loading'>Generating questions...</div>";
+        questionsContainer.innerHTML = "<div class='loading'>Generating questions... Please wait</div>";
         
-        const hasSaldo = await checkSaldoMensagens(currentUserId);
-        if (!hasSaldo) {
-            throw new Error("Insufficient message balance");
-        }
-        
-        currentQuestions = await generateQuestionsWithOpenAI(questionCount, selectedSubject);
-        displayQuestions(currentQuestions);
-    } catch (error) {
-        console.error("Exercise generation failed:", error);
-        questionsContainer.innerHTML = `<p class="error">${error.message}</p>`;
-        throw error;
-    }
-}
-
-async function generateQuestionsWithOpenAI(count, subject) {
-    const apiKey = "your-api-key-should-be-on-backend"; // Mover para backend em produção
-    const prompt = `Generate ${count} multiple-choice questions about ${subject} in ABAP programming.
+        const prompt = `Generate ${questionCount} multiple-choice questions about ${selectedSubject} in ABAP programming.
 Each question should have:
 1. A clear question statement
 2. 5 alternatives (A, B, C, D, E)
@@ -193,7 +182,6 @@ D) To define screen elements
 E) To call functions
 Correct Answer: A`;
 
-    try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -209,14 +197,18 @@ Correct Answer: A`;
         });
 
         if (!response.ok) {
-            throw new Error(`API request failed with status ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(`API error: ${errorData.error?.message || 'Unknown error'}`);
         }
 
         const data = await response.json();
-        return parseQuestionsFromResponse(data.choices[0].message.content);
+        currentQuestions = parseQuestionsFromResponse(data.choices[0].message.content);
+        displayQuestions(currentQuestions);
+        
     } catch (error) {
-        console.error("OpenAI API error:", error);
-        throw new Error("Failed to generate questions. Please try again later.");
+        console.error("Exercise generation failed:", error);
+        questionsContainer.innerHTML = `<p class="error">${error.message || "Failed to generate questions"}</p>`;
+        throw error;
     }
 }
 
@@ -254,14 +246,14 @@ function parseQuestionsFromResponse(content) {
     return questions;
 }
 
-// Display and Submission
+// Exibição de Questões
 function displayQuestions(questions) {
     questionsContainer.innerHTML = "";
     
     questions.forEach((question, index) => {
         const questionElement = document.createElement("div");
         questionElement.className = "question";
-        questionElement.dataset.questionIndex = index;
+        questionElement.dataset.index = index;
         questionElement.innerHTML = `
             <h3>Question ${index + 1}</h3>
             <p>${question.statement}</p>
@@ -286,37 +278,42 @@ function displayQuestions(questions) {
     questionsContainer.appendChild(submitButton);
 }
 
+// Submissão de Respostas
 async function handleSubmit() {
     try {
-        showLoading("Processing your answers...");
+        // Parar timer
+        clearInterval(timer);
+        timerRunning = false;
         
-        const results = checkAnswers(currentQuestions);
-        await saveResults(results);
+        if (currentQuestions.length === 0) {
+            displayMessage("No questions to submit", 'error');
+            return;
+        }
         
+        // Verificar respostas
+        const results = checkAnswers();
+        
+        // Salvar resultados
+        await saveSimuladoResult(results);
+        
+        // Mostrar resultados
         showResults(results);
-        hideLoading();
+        
     } catch (error) {
         console.error("Submission error:", error);
-        showError("Failed to submit answers");
-        hideLoading();
+        displayMessage("Error submitting answers", 'error');
     }
 }
 
-function autoSubmitAnswers() {
-    if (document.querySelector('.submit-button')) {
-        handleSubmit();
-    }
-}
-
-function checkAnswers(questions) {
+function checkAnswers() {
     const results = {
         score: 0,
-        total: questions.length,
+        total: currentQuestions.length,
         details: [],
         timeSpent: timerDisplay.textContent
     };
 
-    questions.forEach((question, index) => {
+    currentQuestions.forEach((question, index) => {
         const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
         const userAnswer = selectedOption ? selectedOption.value : null;
         const isCorrect = userAnswer === question.correctAnswer;
@@ -330,16 +327,18 @@ function checkAnswers(questions) {
             isCorrect
         });
 
-        // Highlight correct answer
-        const questionElement = document.querySelector(`.question[data-question-index="${index}"]`);
+        // Destacar respostas
+        const questionElement = document.querySelector(`.question[data-index="${index}"]`);
         if (questionElement) {
+            // Destacar resposta correta
             const correctOption = questionElement.querySelector(`input[value="${question.correctAnswer}"]`);
             if (correctOption) {
-                correctOption.parentElement.classList.add('correct-answer');
+                correctOption.parentElement.parentElement.classList.add('correct-answer');
             }
             
+            // Destacar resposta incorreta do usuário
             if (selectedOption && !isCorrect) {
-                selectedOption.parentElement.classList.add('incorrect-answer');
+                selectedOption.parentElement.parentElement.classList.add('incorrect-answer');
             }
         }
     });
@@ -347,77 +346,30 @@ function checkAnswers(questions) {
     return results;
 }
 
-async function saveResults(results) {
-    try {
-        await saveSimuladoResult(
-            currentUserId,
-            selectedSubject,
-            results.details.map(detail => ({
-                statement: detail.question,
-                userAnswer: detail.userAnswer || "Not answered",
-                correctAnswer: detail.correctAnswer,
-                isCorrect: detail.isCorrect
-            })),
-            results.score,
-            results.total - results.score
-        );
-    } catch (error) {
-        console.error("Failed to save results:", error);
-        throw new Error("Could not save your results. Please try again.");
-    }
-}
-
 function showResults(results) {
-    clearInterval(timer);
-    timerRunning = false;
-    
     const resultElement = document.createElement("div");
     resultElement.className = "result-summary";
     resultElement.innerHTML = `
-        <h3>Test Completed</h3>
-        <p>Score: ${results.score} out of ${results.total}</p>
-        <p>Percentage: ${Math.round((results.score / results.total) * 100)}%</p>
-        <p>Time: ${results.timeSpent}</p>
-        <div class="detailed-results"></div>
+        <h3>Test Results</h3>
+        <p>Subject: ${selectedSubject}</p>
+        <p>Score: <strong>${results.score}/${results.total}</strong> (${Math.round((results.score/results.total)*100)}%)</p>
+        <p>Time Spent: ${results.timeSpent}</p>
     `;
     
-    const detailedResults = resultElement.querySelector('.detailed-results');
-    results.details.forEach((detail, index) => {
-        const detailElement = document.createElement('div');
-        detailElement.className = `question-result ${detail.isCorrect ? 'correct' : 'incorrect'}`;
-        detailElement.innerHTML = `
-            <h4>Question ${index + 1}: ${detail.isCorrect ? '✓' : '✗'}</h4>
-            <p>${detail.question}</p>
-            <p>Your answer: ${detail.userAnswer || "Not answered"}</p>
-            <p>Correct answer: ${detail.correctAnswer}</p>
-        `;
-        detailedResults.appendChild(detailElement);
-    });
-    
     questionsContainer.appendChild(resultElement);
-    document.querySelector('.submit-button')?.remove();
     
-    // Disable all inputs
+    // Remover botão de submissão
+    const submitButton = document.querySelector('.submit-button');
+    if (submitButton) submitButton.remove();
+    
+    // Desabilitar todas as opções
     document.querySelectorAll('input[type="radio"]').forEach(input => {
         input.disabled = true;
     });
 }
 
-// UI Helpers
-function showLoading(message) {
-    const loading = document.createElement('div');
-    loading.className = 'loading-indicator';
-    loading.textContent = message;
-    loading.id = 'loadingIndicator';
-    document.body.appendChild(loading);
-}
-
-function hideLoading() {
-    const loading = document.getElementById('loadingIndicator');
-    if (loading) loading.remove();
-}
-
-function showMessage(message, type = 'info') {
+// Função de exibição de mensagens
+function displayMessage(message, type = 'info') {
     const messageElement = document.createElement('div');
     messageElement.className = `message message-${type}`;
     messageElement.textContent = message;
@@ -430,91 +382,82 @@ function showMessage(message, type = 'info') {
     }, 5000);
 }
 
-function showError(message, callback) {
-    showMessage(message, 'error');
-    if (callback) setTimeout(callback, 3000);
+// Funções de autenticação (implementação de exemplo)
+async function checkAuthState() {
+    // Implementação real deve verificar o estado de autenticação
+    return new Promise(resolve => {
+        setTimeout(() => {
+            // Simular usuário autenticado
+            resolve(true);
+        }, 1000);
+    });
 }
 
-function disableGenerateButton(reason) {
-    generateButton.disabled = true;
-    generateButton.title = reason;
+async function checkSaldoMensagens() {
+    // Implementação real deve verificar o saldo de mensagens
+    return new Promise(resolve => {
+        setTimeout(() => {
+            // Simular saldo suficiente
+            resolve(true);
+        }, 500);
+    });
 }
 
-// Styles
+async function saveSimuladoResult(results) {
+    // Implementação real deve salvar os resultados
+    return new Promise(resolve => {
+        setTimeout(() => {
+            console.log("Results saved:", results);
+            resolve(true);
+        }, 1000);
+    });
+}
+
+// Estilos embutidos
 function addStyles() {
     const style = document.createElement('style');
     style.textContent = `
-        .loading-indicator {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
-        
         .message {
             padding: 10px 15px;
             margin: 10px 0;
             border-radius: 4px;
         }
-        
         .message-error {
             background-color: #ffebee;
             color: #c62828;
             border: 1px solid #ef9a9a;
         }
-        
         .message-info {
             background-color: #e3f2fd;
             color: #1565c0;
             border: 1px solid #90caf9;
         }
-        
         .message-success {
             background-color: #e8f5e9;
             color: #2e7d32;
             border: 1px solid #a5d6a7;
         }
-        
         .question {
             margin-bottom: 20px;
             padding: 15px;
-            background: #f5f5f5;
+            background: #f9f9f9;
             border-radius: 5px;
+            border-left: 4px solid #2196f3;
         }
-        
         .options {
             list-style: none;
             padding: 0;
         }
-        
-        .option {
-            margin: 5px 0;
-            padding: 5px;
-            border-radius: 3px;
+        .options li {
+            margin: 8px 0;
+            padding: 8px;
+            background: #fff;
+            border-radius: 4px;
         }
-        
-        .option:hover {
-            background: #e0e0e0;
-        }
-        
-        .correct-answer {
-            background-color: #e8f5e9 !important;
-            font-weight: bold;
-        }
-        
-        .incorrect-answer {
-            background-color: #ffebee !important;
-            text-decoration: line-through;
-        }
-        
         .submit-button {
-            margin-top: 20px;
-            padding: 10px 20px;
+            display: block;
+            margin: 20px auto;
+            padding: 12px 25px;
             background: #2196f3;
             color: white;
             border: none;
@@ -522,52 +465,38 @@ function addStyles() {
             cursor: pointer;
             font-size: 16px;
         }
-        
         .submit-button:hover {
             background: #0d8bf2;
         }
-        
-        .submit-button:disabled {
-            background: #b0bec5;
-            cursor: not-allowed;
-        }
-        
         .result-summary {
             margin-top: 20px;
             padding: 20px;
-            background: #f5f5f5;
+            background: #e8f5e9;
             border-radius: 5px;
+            text-align: center;
         }
-        
-        .question-result {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 4px;
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
         }
-        
-        .question-result.correct {
-            background-color: #e8f5e9;
-            border-left: 4px solid #2e7d32;
+        .error {
+            color: #c62828;
+            text-align: center;
+            padding: 20px;
         }
-        
-        .question-result.incorrect {
+        .correct-answer {
+            background-color: #e8f5e9 !important;
+            border-left: 3px solid #2e7d32;
+        }
+        .incorrect-answer {
             background-color: #ffebee;
-            border-left: 4px solid #c62828;
-        }
-        
-        select, input {
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 4px;
-            border: 1px solid #bdbdbd;
-        }
-        
-        button {
-            transition: background-color 0.3s;
+            border-left: 3px solid #c62828;
         }
     `;
     document.head.appendChild(style);
 }
 
-// Initialize styles
+// Inicializar estilos
 addStyles();
