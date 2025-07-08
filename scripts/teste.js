@@ -1,4 +1,8 @@
-// Elementos do DOM
+
+import {
+    checkAuthState,
+    checkSaldoMensagens,
+} from './authValidation_simp.js';// Elementos do DOM
 const generateButton = document.querySelector(".generate-button");
 const questionsContainer = document.querySelector(".questions-container");
 const questionCountInput = document.getElementById("questionCount");
