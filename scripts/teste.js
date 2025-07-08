@@ -25,27 +25,29 @@ const apiKey = "sk-svcacct-rCZJ4KlGZ1OVeWDVXCjKcX8zkZ7FcYwGd4ooDZ6m1WIrc2M3IgGJj
 // Configuração inicial
 document.addEventListener('DOMContentLoaded', initializeApp);
 
-async function initializeApp() {
+// Main function that checks authentication and balance before obtaining the AI response
+async function handleAIRequest(message) {
     try {
-        displayMessage("Checking authentication...", 'info');
-        
-        // Verificação de autenticação
-        const isAuthenticated = await checkAuthState();
-        if (!isAuthenticated) {
-            throw new Error("User not authenticated");
+        const userId = await checkAuthState();
+        const hasSaldoMensagens = await checkSaldoMensagens(userId); //
+
+        if (!userId) {
+            alert('User is not logged in. Redirecting to the login page.');
+            window.location.href = '/index.html'; // Redirect to the login page if not logged in
+            return;
         }
-        
-        setupSubjectSelect();
-        setupEventListeners();
-        
-        displayMessage("Ready to start. Select a subject!", 'success');
+
+        if (!hasSaldoMensagens) {
+            addMessage('ai', 'You do not have enough balance to proceed.');
+            return; // Stop execution if balance is insufficient
+        }
+        addToConversationHistory('user', message); // Add the user's message to the history
+
+        await getAIResponse(message, hasSaldoMensagens); // Call the function to get the AI response
     } catch (error) {
-        console.error('Initialization error:', error);
-      //  displayMessage("Authentication failed. Redirecting to login...", 'error');
-    //    setTimeout(() => {
-    //        window.location.href = '/index.html';
-  //      }, 3000);
-  //  }
+        console.error('Error sending message:', error);
+        addMessage('ai', error.message); // Display the error message to the user
+    }
 }
 
 function setupEventListeners() {
@@ -193,10 +195,10 @@ Correct Answer: A`;
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: "gpt-3.5-turbo",
+                model: "gpt-4o-mini",
                 messages: [{ role: "user", content: prompt }],
-                temperature: 0.7,
-                max_tokens: 2000
+                temperature: 0.5,
+                max_tokens: 4000
             })
         });
 
