@@ -41,11 +41,11 @@ async function initializeApp() {
         displayMessage("Ready to start. Select a subject!", 'success');
     } catch (error) {
         console.error('Initialization error:', error);
-        displayMessage("Authentication failed. Redirecting to login...", 'error');
-        setTimeout(() => {
-            window.location.href = '/index.html';
-        }, 3000);
-    }
+      //  displayMessage("Authentication failed. Redirecting to login...", 'error');
+    //    setTimeout(() => {
+    //        window.location.href = '/index.html';
+  //      }, 3000);
+  //  }
 }
 
 function setupEventListeners() {
