@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const menu = document.getElementById('menu');
 
   // Toggle menu visibility (abre/fecha no mobile)
-  menuToggle.addEventListener('click', () => {
-    menu.classList.toggle('show');
-  });
+//  menuToggle.addEventListener('click', () => {
+//    menu.classList.toggle('show');
+//  });
 
   // Handle navigation
   navLinks.forEach(link => {
