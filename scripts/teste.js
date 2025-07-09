@@ -314,7 +314,7 @@ async function processSubmission(subject, questions, score, wrongAnswers) {
 }
 
 function formatQuestion(question, index) {
-    const userAnswer = document.querySelector(`input[name="question${index}"]:checked`) ? .value || "Not answered";
+    const userAnswer = document.querySelector(`input[name="question${index}"]:checked`) ?.value || "Not answered";
 
     return {
         statement: question.statement || "No statement",
