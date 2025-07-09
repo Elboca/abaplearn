@@ -94,6 +94,63 @@ function updateTimer() {
     }
 }
 
+Seu código continuará dando erro se tentar acessar a variável de ambiente OPENAI_API_KEY diretamente no arquivo scripts/teste.js, pois variáveis de ambiente só existem no backend ou em funções serverless (como as do Netlify).
+Elas nunca ficam disponíveis no JavaScript do navegador em um site estático.
+O que você deve fazer:
+1. Frontend (teste.js):
+
+    Nunca tente acessar process.env.OPENAI_API_KEY nem nada parecido.
+    Em vez disso, envie seu prompt para uma função serverless (Netlify Function).
+
+2. Netlify Function (backend):
+
+    Acesse process.env.OPENAI_API_KEY apenas aqui.
+    Essa função recebe o prompt do frontend, faz a chamada à OpenAI, e devolve o resultado ao frontend.
+
+Exemplo de fluxo correto
+A. Netlify Function (netlify/functions/openai-proxy.js):
+js
+
+const fetch = require('node-fetch');
+
+exports.handler = async function(event) {
+  const { prompt } = JSON.parse(event.body || '{}');
+  const apiKey = process.env.OPENAI_API_KEY;
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 4000,
+      temperature: 0.5
+    }),
+  });
+
+  const data = await response.json();
+  return {
+    statusCode: 200,
+    body: JSON.stringify(data),
+  };
+};
+
+    Dica: O node-fetch geralmente já está disponível no ambiente Netlify Functions. Se não estiver, adicione no package.json do seu projeto.
+
+B. Frontend (scripts/teste.js):
+js
+
+async function gerarQuestoes(prompt) {
+  const response = await fetch('/.netlify/functions/openai-proxy', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ prompt })
+  });
+  const data = await response.json();
+  return data;
+}
 async function generateExercises(questionCount) {
     questionsContainer.innerHTML = "<p>Generating exercises, please wait...</p>";
 
