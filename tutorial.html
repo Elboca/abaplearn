@@ -6,7 +6,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <title>Tutorial Detalhado -SUPABAP MASTER IA</title>
   <link rel="stylesheet" href="styles/homepage.css"> 
   <style>
     .container {
@@ -101,129 +100,69 @@
   </style>
 </head>
 <body class="bg-gray-100 text-gray-900">
-  <div class="language-toggle" id="language-toggle">English</div>
-  <header class="bg-pink-500 p-4 shadow-md fixed top-0 w-full z-50">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <i class="fas fa-book-reader text-white text-2xl"></i>
-        <h1 class="text-1xl font-bold text-white">SUPABAP - Artificial Intelligence</h1>
-      </div>
-      <button id="menu-toggle" aria-label="Toggle Menu" aria-controls="menu" class="text-white text-2xl md:hidden focus:outline-none">
-        <i class="fas fa-bars"></i>
-      </button>
-      <nav id="menu" class="hidden md:flex">
-        <ul class="flex flex-col md:flex-row md:space-x-4">
-          <li><a href="homepage.html" class="nav-link px-4 py-2"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-          <li><a href="aulas.html" class="nav-link px-4 py-2"><i class="fas fa-book-open"></i>Lessons</a></li>
-          <li><a href="teste.html" class="nav-link px-4 py-2"><i class="fas fa-pencil-alt"></i> Tests</a></li>
-          <li><a href="tutorial.html" class="nav-link px-4 py-2"><i class="fas fa-info-circle"></i> Tutorial</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  
+ <h1 id="tutorial-title">Detailed Tutorial - ABAP Lessons and Tests</h1>
 
-  <h1 id="tutorial-title">Tutorial Detalhado - Aulas e Testes ABAP</h1>
+<div class="container">
+  <section class="section-content">
+    <h2 id="section-1-title">1. Interactive ABAP Lessons</h2>
+    <p id="section-1-text">
+      The <strong>Lessons</strong> section offers an interactive and personalized learning environment for the most important ABAP modules and concepts, such as ABAP RICEFW, ABAP OO, and SAP FIORI.
+    </p>
+    <ul id="section-1-list">
+      <li>ABAP RICEFW</li>
+      <li>ABAP OO</li>
+      <li>ABAP BOPF</li>
+      <li>SAP FIORI</li>
+      <li>SAP BTP</li>
+    </ul>
+  </section>
 
-  <div class="container">
-    <section class="section-content">
-      <h2 id="section-1-title">1. Aulas Interativas de ABAP</h2>
-      <p id="section-1-text">
-        A seção <strong>Aulas</strong> oferece um ambiente de aprendizado interativo e personalizado para os módulos e conceitos mais importantes de ABAP, como ABAP RICEFW, ABAP OO e SAP FIORI.
-      </p>
-      <ul id="section-1-list">
-        <li>ABAP RICEFW</li>
-        <li>ABAP OO</li>
-        <li>ABAP BOPF</li>
-        <li>SAP FIORI</li>
-        <li>SAP BTP</li>
-      </ul>
-    </section>
-
-    <section class="section-content">
-      <h2 id="section-2-title">2. Prática de Testes Personalizados</h2>
-      <p id="section-2-text">
-        A seção <strong>Testes</strong> permite a prática com questões de ABAP, abrangendo tópicos como debugging, relatórios ALV, e desenvolvimento de módulos ABAP orientados a objetos.
-      </p>
-      <ul id="section-2-list">
-        <li>Debugging em ABAP</li>
-        <li>Relatórios ALV</li>
-        <li>Técnicas de Modularização</li>
-        <li>Classes e Objetos</li>
-        <li>CDS Views</li>
-      </ul>
-    </section>
+  <section class="section-content">
+    <h2 id="section-2-title">2. Personalized Test Practice</h2>
+    <p id="section-2-text">
+      The <strong>Tests</strong> section allows practice with ABAP questions, covering topics such as debugging, ALV reports, and object-oriented ABAP module development.
+    </p>
+    <ul id="section-2-list">
+      <li>ABAP Debugging</li>
+      <li>ALV Reports</li>
+      <li>Modularization Techniques</li>
+      <li>Classes and Objects</li>
+      <li>CDS Views</li>
+    </ul>
+  </section>
+</div>
+  <div class="terms-link">
+    <a href="terms.html">Application Terms of Use</a>
+  </div>
   </div>
 
+			<footer class="footer">
+				<nav class="footer-nav">
 
+         <a href="tutorial.html"><i class="fas fa-info-circle"></i>Tutorial</a>
+		<a  href="homepage.html" class="nav-link px-4 py-2"><i class="fas fa-chart-line"></i> Dashboard</a>
+		<a href="basico.html" class="nav-link px-4 py-2"><i class="fas fa-book-open"></i> Lessons</a>
+	<a href="teste.html" class="nav-link px-4 py-2"><i class="fas fa-pencil-alt"></i> Tests</a>
+		</nav>
+	</footer>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
-  document.addEventListener('DOMContentLoaded', function () {
-  const navLinks = document.querySelectorAll('.nav-link');
-  const menuToggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('menu');
-
-  // Toggle menu visibility (abre/fecha no mobile)
-  menuToggle.addEventListener('click', () => {
-    menu.classList.toggle('show');
-  });
-
-  // Handle navigation
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      // Fecha o menu ao clicar no link (apenas no mobile)
-      if (window.innerWidth < 768) {
-        menu.classList.add('hidden');
-      }
+  const setupFooterLinks = () => {
+  const footerLinks = document.querySelectorAll(".footer-nav a");
+  footerLinks.forEach((link) => {
+    if (link.href === window.location.href) {
+      link.classList.add("active");
+    }
+    link.addEventListener("click", () => {
+      footerLinks.forEach((l) => l.classList.remove("active"));
+      link.classList.add("active");
     });
   });
-
-  // Fecha o menu quando clicar fora dele no mobile
-  document.addEventListener('click', (event) => {
-    const isClickInsideMenu = menu.contains(event.target);
-    const isClickOnMenuToggle = menuToggle.contains(event.target);
-
-    if (!isClickInsideMenu && !isClickOnMenuToggle && window.innerWidth < 768) {
-      menu.classList.add('hidden');
-	  }
-  });
-});
-    const languageToggle = document.getElementById('language-toggle');
-    const content = {
-      pt: {
-        tutorialTitle: "Tutorial Detalhado - Aulas e Testes ABAP",
-        section1Title: "1. Aulas Interativas de ABAP",
-        section1Text: "A seção Aulas oferece um ambiente de aprendizado interativo e personalizado para os módulos e conceitos mais importantes de ABAP, como ABAP RICEFW, ABAP OO e SAP FIORI.",
-        section1List: ["ABAP RICEFW", "ABAP OO", "ABAP BOPF", "SAP FIORI", "SAP BTP"],
-        section2Title: "2. Prática de Testes Personalizados",
-        section2Text: "A seção Testes permite a prática com questões de ABAP, abrangendo tópicos como debugging, relatórios ALV, e desenvolvimento de módulos ABAP orientados a objetos.",
-        section2List: ["Debugging em ABAP", "Relatórios ALV", "Técnicas de Modularização", "Classes e Objetos", "CDS Views"]
-      },
-      en: {
-        tutorialTitle: "Detailed Tutorial - ABAP Lessons and Tests",
-        section1Title: "1. Interactive ABAP Lessons",
-        section1Text: "The Lessons section offers an interactive and personalized learning environment for the most important ABAP modules and concepts, such as ABAP RICEFW, ABAP OO, and SAP FIORI.",
-        section1List: ["ABAP RICEFW", "ABAP OO", "ABAP BOPF", "SAP FIORI", "SAP BTP"],
-        section2Title: "2. Personalized Test Practice",
-        section2Text: "The Test section allows for practice with ABAP questions, covering topics like debugging, ALV reports, and object-oriented ABAP module development.",
-        section2List: ["ABAP Debugging", "ALV Reports", "Modularization Techniques", "Classes and Objects", "CDS Views"]
-      }
-    };
-
-    languageToggle.addEventListener('click', () => {
-      const currentLang = languageToggle.textContent === 'English' ? 'en' : 'pt';
-      const newLang = currentLang === 'en' ? 'pt' : 'en';
-
-      document.getElementById('tutorial-title').textContent = content[newLang].tutorialTitle;
-      document.getElementById('section-1-title').textContent = content[newLang].section1Title;
-      document.getElementById('section-1-text').textContent = content[newLang].section1Text;
-      document.getElementById('section-1-list').innerHTML = content[newLang].section1List.map(item => `<li>${item}</li>`).join('');
-      document.getElementById('section-2-title').textContent = content[newLang].section2Title;
-      document.getElementById('section-2-text').textContent = content[newLang].section2Text;
-      document.getElementById('section-2-list').innerHTML = content[newLang].section2List.map(item => `<li>${item}</li>`).join('');
-
-      languageToggle.textContent = newLang === 'en' ? 'English' : 'Português';
-    });
-  </script>
+};
+ 
+ </script>
+ 
 </body>
 </html>
