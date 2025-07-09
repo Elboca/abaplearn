@@ -3,8 +3,8 @@ import {
     checkSaldoMensagens
 } from './authValidation_simp.js';
 
-// Replace 'YOUR_API_KEY' with your actual key, ensuring that this file remains secure and hidden from the client
-const apiKey = "sk-svcacct-rCZJ4KlGZ1OVeWDVXCjKcX8zkZ7FcYwGd4ooDZ6m1WIrc2M3IgGJj6urQEQhMJT3BlbkFJeP4BeVA70sjes2-6AlD3qthVL69vdrjSSQ-oexFAy0sfebFHexHQ59hMSgxJQA";
+// ATENÇÃO: Nunca exponha sua apiKey no frontend em produção!
+const apiKey = process.env.OPENAI_API_KEY; // Troque por backend seguro em produção.
 
 const generateButton = document.querySelector(".generate-button");
 const questionsContainer = document.querySelector(".questions-container");
@@ -12,7 +12,6 @@ const questionCountInput = document.getElementById("questionCount");
 const timerDurationInput = document.getElementById("timerDuration");
 const timerDisplay = document.getElementById("time");
 const controlTimerButton = document.getElementById("controlTimer");
-
 const subjectSelect = document.getElementById("subjectSelect");
 
 let selectedSubject = "";
@@ -20,20 +19,18 @@ let timer;
 let seconds = 0;
 let timerRunning = false;
 
-// Event listeners for the selects
-
+// Event listeners
 subjectSelect.addEventListener("change", () => {
     selectedSubject = subjectSelect.value;
 });
 
 generateButton.addEventListener("click", () => {
-
     if (!selectedSubject) {
         displayMessage("Please, select a test before generating exercises", 'error');
         return;
     }
-    const questionCount = parseInt(questionCountInput.value);
-    if (questionCount < 5 || questionCount > 30) {
+    const questionCount = parseInt(questionCountInput.value, 10);
+    if (isNaN(questionCount) || questionCount < 5 || questionCount > 30) {
         displayMessage("Please choose a number of questions between 5 and 30.", 'error');
         return;
     }
@@ -57,22 +54,18 @@ controlTimerButton.addEventListener("click", () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        console.log("Starting authentication and balance check...");
-        const isAuthenticated = await checkAuthState();
-        console.log('Authentication and balance successfully verified:', isAuthenticated);
+        await checkAuthState();
     } catch (error) {
-        console.error('Error checking authentication/balance:', error);
         window.location.href = '/index.html';
     }
 });
 
 function startTimer() {
-    if (!timerRunning) {
-        clearInterval(timer);
-        seconds = parseInt(timerDurationInput.value) * 60;
-        timer = setInterval(updateTimer, 1000);
-        timerRunning = true;
-    }
+    clearInterval(timer);
+    seconds = parseInt(timerDurationInput.value, 10) * 60;
+    if (isNaN(seconds) || seconds <= 0) seconds = 60 * 5; // fallback para 5 minutos
+    timer = setInterval(updateTimer, 1000);
+    timerRunning = true;
 }
 
 function pauseTimer() {
@@ -123,11 +116,10 @@ async function generateExercises(questionCount) {
                 model: "gpt-4o-mini",
                 messages: [{
                     role: "user",
-                    content: `Generate ${questionCount} multiple-choice questions about ${selectedSubject} in ABAP programming. Each question should have a statement and 5 alternatives (A, B, C, D, E). Indicate the correct answer for each question in the format 'Answer: X', where X is the letter of the correct alternative. Do not give greetings, just provide the questions.`
+                    content: `Generate ${questionCount} multiple-choice questions about ${selectedSubject} in ABAP programming. Each question should have a statement and 5 alternatives (A, B, C, D, E). Indicate the correct answer for each question in the format 'Answer: X', where X is the letter of the correct alternative. Also, provide a short explanation for each question in the format 'Comment: ...'. Do not give greetings, just provide the questions.`
                 }],
                 max_tokens: 4000,
                 temperature: 0.5,
-
             })
         });
 
@@ -136,31 +128,37 @@ async function generateExercises(questionCount) {
         }
 
         const data = await response.json();
-        const questions = parseQuestionsFromResponse(data.choices[0].message.content);
+        const questions = parseQuestionsFromResponse(data.choices[0]?.message?.content || "");
         displayQuestions(questions);
     } catch (error) {
-        console.error("Error generating exercises:", error);
         questionsContainer.innerHTML = "<p>An error occurred while generating the exercises. Please try again.</p>";
         displayMessage("Error generating exercises. Please try again later.", 'error');
     }
 }
 
+// Agora o parser reconhece "Comment:" ou "Explanation:"
 function parseQuestionsFromResponse(content) {
     const questions = [];
     const questionBlocks = content.split(/\d+\.\s/).filter(Boolean);
 
-    questionBlocks.forEach((block, index) => {
+    questionBlocks.forEach((block) => {
         const lines = block.split("\n").filter(Boolean);
-        const statement = lines[0].trim();
+        const statement = lines[0]?.trim() || "";
         const alternatives = {};
         let correctAnswer = "";
+        let comment = "";
 
         lines.slice(1).forEach((line) => {
             if (
                 line.toLowerCase().startsWith("answer:") ||
                 line.toLowerCase().startsWith("correct answer:")
             ) {
-                correctAnswer = line.split(":")[1].trim();
+                correctAnswer = line.split(":")[1]?.trim() || "";
+            } else if (
+                line.toLowerCase().startsWith("comment:") ||
+                line.toLowerCase().startsWith("explanation:")
+            ) {
+                comment = line.split(":").slice(1).join(":").trim();
             } else {
                 const [letter, text] = line.split(") ");
                 if (letter && text) {
@@ -172,7 +170,8 @@ function parseQuestionsFromResponse(content) {
         questions.push({
             statement,
             alternatives,
-            correctAnswer
+            correctAnswer,
+            comment // Inclui o comentário!
         });
     });
 
@@ -180,7 +179,6 @@ function parseQuestionsFromResponse(content) {
 }
 
 function displayQuestions(questions) {
-    console.log("Displaying questions:", questions);
     questionsContainer.innerHTML = "";
     questions.forEach((question, index) => {
         const questionElement = document.createElement("div");
@@ -210,10 +208,7 @@ function displayQuestions(questions) {
     submitButton.textContent = "Submit Answers";
     submitButton.classList.add("submit-button");
     submitButton.addEventListener("click", async () => {
-        const {
-            score,
-            wrongAnswers
-        } = checkAnswers(questions);
+        const { score, wrongAnswers } = checkAnswers(questions);
         clearInterval(timer);
         timerRunning = false;
         await processSubmission(selectedSubject, questions, score, wrongAnswers);
@@ -221,40 +216,43 @@ function displayQuestions(questions) {
     questionsContainer.appendChild(submitButton);
 }
 
+// Exibe comentário após certo/errado
 function checkAnswers(questions) {
     let score = 0;
     let wrongAnswers = 0;
 
-    // Remove resultados anteriores, se existirem
     document.querySelectorAll('.correct-answer, .incorrect-answer').forEach(e => e.remove());
     const oldSummary = document.querySelector('.result-summary');
     if (oldSummary) oldSummary.remove();
 
     questions.forEach((question, index) => {
-        // Busca o elemento da questão de forma mais robusta
         const questionElement = questionsContainer.querySelectorAll('.question')[index];
         const selectedAnswer = questionElement.querySelector(`input[name="question${index}"]:checked`);
         const correctAnswer = question.correctAnswer;
+        const comment = question.comment || "";
 
-        const resultElement = document.createElement("p");
+        const resultElement = document.createElement("div");
         resultElement.style.marginTop = "10px";
 
         if (selectedAnswer) {
             if (selectedAnswer.value === correctAnswer) {
                 score++;
-                resultElement.textContent = `Correct! The answer is ${correctAnswer}.`;
-                resultElement.classList.add("correct-answer");
+                resultElement.innerHTML = `<p class="correct-answer">Correct! The answer is ${correctAnswer}.</p>`;
             } else {
-                resultElement.textContent = `Incorrect! The answer is ${correctAnswer}.`;
-                resultElement.classList.add("incorrect-answer");
+                resultElement.innerHTML = `<p class="incorrect-answer">Incorrect! The answer is ${correctAnswer}.</p>`;
                 wrongAnswers++;
             }
         } else {
-            resultElement.textContent = `Not answered. The correct answer is ${correctAnswer}.`;
-            resultElement.classList.add("incorrect-answer");
+            resultElement.innerHTML = `<p class="incorrect-answer">Not answered. The correct answer is ${correctAnswer}.</p>`;
             wrongAnswers++;
         }
-
+        // Adiciona comentário/explicação da questão
+        if (comment) {
+            const commentElement = document.createElement("p");
+            commentElement.classList.add("question-comment");
+            commentElement.textContent = `Explanation: ${comment}`;
+            resultElement.appendChild(commentElement);
+        }
         questionElement.appendChild(resultElement);
     });
 
@@ -269,23 +267,18 @@ function checkAnswers(questions) {
     `;
     questionsContainer.appendChild(resultSummary);
 
-    // Disable inputs after submission
     document.querySelectorAll('input[type="radio"]').forEach((input) => {
         input.disabled = true;
     });
 
     const submitButton = document.querySelector(".submit-button");
-    if (submitButton) {
-        submitButton.remove();
-    }
+    if (submitButton) submitButton.remove();
 
     displayMessage(`You got ${score} out of ${questions.length} questions correct!`, 'success');
 
-    return {
-        score,
-        wrongAnswers
-    };
+    return { score, wrongAnswers };
 }
+
 async function processSubmission(subject, questions, score, wrongAnswers) {
     const userId = await checkAuthState();
 
@@ -302,19 +295,19 @@ async function processSubmission(subject, questions, score, wrongAnswers) {
             correctAnswer: "N/A",
             userAnswer: "Not answered",
             correct: 0,
-            incorrect: 1
+            incorrect: 1,
+            comment: ""
         });
     } else {
         console.error("Unknown 'questions' format:", questions);
     }
 
-    console.log("Formatted questions to save:", formattedQuestions);
-
     await saveSimuladoResult(userId, subject, formattedQuestions, score, wrongAnswers);
 }
 
 function formatQuestion(question, index) {
-    const userAnswer = document.querySelector(`input[name="question${index}"]:checked`) ? .value || "Not answered";
+    const selected = document.querySelector(`input[name="question${index}"]:checked`);
+    const userAnswer = selected ? selected.value : "Not answered";
 
     return {
         statement: question.statement || "No statement",
@@ -322,38 +315,32 @@ function formatQuestion(question, index) {
         correctAnswer: question.correctAnswer || "N/A",
         userAnswer: userAnswer,
         correct: userAnswer === question.correctAnswer ? 1 : 0,
-        incorrect: userAnswer !== question.correctAnswer ? 1 : 0
+        incorrect: userAnswer !== question.correctAnswer ? 1 : 0,
+        comment: question.comment || ""
     };
 }
 
+// Footer
 const footerLinks = document.querySelectorAll(".footer-nav a");
 footerLinks.forEach((link) => {
-    if (link.href === window.location.href) {
-        link.classList.add("active");
-    }
-
+    if (link.href === window.location.href) link.classList.add("active");
     link.addEventListener("click", () => {
         footerLinks.forEach((l) => l.classList.remove("active"));
         link.classList.add("active");
     });
 });
 
-// displayMessage function as described
+// Mensagem dinâmica
 function displayMessage(message, type = 'info') {
     const messageContainer = document.getElementById('messageContainer');
-    messageContainer.innerHTML = ''; // Clear previous messages
+    if (!messageContainer) return;
+    messageContainer.innerHTML = '';
 
     const messageElement = document.createElement('div');
-    messageElement.classList.add('message');
-
-    if (type === 'success') {
-        messageElement.classList.add('message-success');
-    } else if (type === 'error') {
-        messageElement.classList.add('message-error');
-    } else {
-        messageElement.classList.add('message-info');
-    }
-
+    messageElement.classList.add('message',
+        type === 'success' ? 'message-success' :
+        type === 'error' ? 'message-error' : 'message-info'
+    );
     messageElement.textContent = message;
     messageContainer.appendChild(messageElement);
 
