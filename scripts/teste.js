@@ -1,5 +1,5 @@
 import {   checkAuthState,
-checkMessageBalance,  saveSimulatedExamResult  } from './authval.js';
+checkMessageBalance,  saveSimulatedExamResult  } from './authValidation_simp.js';
 // abap-tests-module.js
 
 // Ensure to store your API key securely
