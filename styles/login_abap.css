@@ -6,7 +6,12 @@
         }
       body, html {
     background: white;
-    color: #333;
+               align-items: center;
+                justify-content: center;
+              max-height: 100%;
+            overflow: hidden;
+                 color: #2196F3;
+              background: linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF);
 }
 
 
@@ -88,13 +93,14 @@ button {
             width: 90%;
             max-width: 350px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            position: absolute;
+            position: absolute; 
+            /*    position: relative; */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             opacity: 0;
             transition: opacity 0.6s ease;
-            z-index: 10;
+           z-index: 10; 
         }
 
 .social-login {
@@ -121,103 +127,113 @@ button {
         padding: 20px;
     margin-right: 10px;
 }
-        .form-title {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 16px;
-        }
-        button {
-            width: 100%;
-            padding: 20px;
-            border: none;
-            border-radius: 5px;
-            background: linear-gradient(45deg, #2ECC40, #1a4731);
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(46, 204, 64, 0.5);
-        }
-     
-     
-     .links {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-            padding: 5px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .links p {
-            color: #fff;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-        .links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1rem;
-        }
-        /* Estilo para o parágrafo que contém o link */
+      .form-title {
+    color: #5BCEFA;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    text-shadow: 0 0 10px rgba(91, 206, 250, 0.5);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    background: rgba(91, 206, 250, 0.1);
+    border: 1px solid #5BCEFA;
+    border-radius: 5px;
+    color: #333;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(45deg, #5BCEFA, #F5A9B8);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(91, 206, 250, 0.5);
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.links p {
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.links a {
+    color: #5BCEFA;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.links a:hover {
+    color: #F5A9B8;
+}
+
 .recover {
     text-align: center;
     margin: 10px 0;
 }
 
-/* Estilo para o link dentro do parágrafo .recover */
 .recover a {
-    color: #4CAF50; /* Verde mais claro, ajuste conforme necessário */
+    color: #5BCEFA;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
     transition: color 0.3s ease;
 }
 
-/* Efeito hover para o link */
 .recover a:hover {
-    color: #45a049; /* Um tom ligeiramente mais escuro para o hover */
+    color: #F5A9B8;
     text-decoration: underline;
 }
 
-/* Opcional: adicionar um ícone antes do link */
 .recover a::before {
-    content: '🔑 '; /* Ícone de chave, você pode substituir por outro ou remover */
+    content: '📚 ';
     margin-right: 3px;
 }
+    margin-right: 3px;
+}
+
         #signup {
             display: none;
         }
-        #tagline {
-        /*    position: absolute; */
-               position: fixed;
-            bottom: 120px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: #fff;
-            font-size: 1rem;
-            opacity: 0;
-            transition: opacity 4s ease;
-            padding: 0 10px; 
-          /*    z-index: 150;*/
+#tagline {
+      /*   position: absolute; 
+  position: fixed; 
+    bottom: -20px;*/
+     left: 0;
+    width: 100%;
+    text-align: center;
+    color: #333;
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity 4s ease;
+    padding: 0 10px;
+
         }
         @media (max-height: 600px) {
             .intro-element {

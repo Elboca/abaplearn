@@ -1,12 +1,12 @@
 :root {
-  --primary-color: #fb8291;
+  --primary-color: #42b2f9;
   --secondary-color: #f0f0f0;
   --text-color: #333333;
   --background-color: #ffffff;
   --chat-bg: #f7f7f8;
   --user-message-bg: #dcf8c6;
   --ai-message-bg: #ffffff;
-  --button-hover: #42b2f9;
+  --button-hover: #0d8a6f;
   --footer-bg: #f0f0f0;
   --footer-active: #10a37f;
       --primary-color2: #4CAF50;
@@ -30,7 +30,7 @@ body {
 	  max-width: 100%;
     flex-direction: column;
     max-height: 90vh;
-    margin: 4;
+    margin: 0;
 	 overflow-y: auto;
 }
 
@@ -38,44 +38,41 @@ body {
 .container {
     max-width: 100%;
     margin: 0 auto;
-    padding: 0.4rem 0.4rem;
+    padding: 1rem 1rem;
     display: flex;
     flex-direction: column;
     flex: 1;
-        min-height: calc(100vh - 50px); 
     overflow-y: auto;
 }
 
 .subject-buttons {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Define duas colunas para os botões */
-  gap: 0.7rem; /* Espaçamento entre os botões */
-  margin-bottom: 1rem;
-   margin-top: 7rem;
-    padding: 0.7rem 0.7rem;
-
+  gap: 0.6rem; /* Espaçamento entre os botões */
+  margin-bottom: 2rem;
+	    padding: 0.3rem 0.3rem;
 }
 
 .subject-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 0.7rem 0.7rem;
-  font-size: 1rem; /* Tamanho do texto dos botões */
+  padding: 1rem 1rem;
+  font-size: 1.3rem; /* Tamanho do texto dos botões */
   cursor: pointer;
   transition: all 0.4s ease;
-  border-radius: 0.7rem;
+  border-radius: 1.4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 50px; /* Reduzido para acomodar dois por linha */
+  min-height: 40px; /* Reduzido para acomodar dois por linha */
 }
 
 .subject-button i {
-  font-size: 10rem; /* Tamanho do ícone ajustado */
-  margin-bottom: 0.5rem;
+  font-size: 12rem; /* Tamanho do ícone ajustado */
+  margin-bottom: 0.6rem;
 }
 
 .subject-button:hover, .subject-button:focus {
@@ -227,7 +224,7 @@ body {
   background-color: var(--user-message-bg);
  border-radius: 10px;
     padding: 5px 10px; 
-    width: 80%; 
+    max-width: 80%; 
     margin: 5px auto; 
     font-size: 0.9rem; 
     align-self: flex-end;
@@ -280,7 +277,7 @@ button[type="submit"]:hover, button[type="submit"]:focus {
     text-align: center;
     position: fixed;
     bottom: 0;
-   width: 100%;
+     width: 100%;
      z-index: 999;   /* Maior que o z-index do .chat-input */
 
 }
@@ -322,7 +319,7 @@ button[type="submit"]:hover, button[type="submit"]:focus {
     .subject-button {
         font-size: 2rem;
         padding: 0.75rem;
-        min-height: 100px;
+        min-height: 50px;
     }
 
     .subject-button i {
@@ -359,9 +356,9 @@ button[type="submit"]:hover, button[type="submit"]:focus {
     }
 
     .subject-button {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         padding: 0.75rem;
-        min-height: 100px;
+        min-height: 50px;
     }
 
     .subject-button i {
@@ -400,7 +397,7 @@ button[type="submit"]:hover, button[type="submit"]:focus {
     .subject-button {
         font-size: 1.6rem;
         padding: 0.75rem;
-        min-height: 80px;
+        min-height: 40px;
     }
 
     .subject-button i {
@@ -431,19 +428,19 @@ button[type="submit"]:hover, button[type="submit"]:focus {
 }
 
 /* Smartphones médios - Tipo iPhone, Galaxy S */
-@media (max-width: < 640px) {
+@media (max-width: 640px) {
     h1 {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
     }
 
     .subject-button {
-        font-size: 1.2rem;
-        padding: 0.6rem;
-        min-height: 10px;
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        min-height: 40px;
     }
 
     .subject-button i {
-    font-size: 2rem;
+        font-size: 2rem;
     }
 
     .message {
@@ -472,19 +469,19 @@ button[type="submit"]:hover, button[type="submit"]:focus {
 /* Smartphones compactos - Tipo iPhone SE, Galaxy A */
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
-       .subject-button {
-        font-size: 1rem;
-        padding: 0.4rem;
-        min-height: 80px;
+    .subject-button {
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        min-height: 40px;
     }
 
     .subject-button i {
         font-size: 2rem;
     }
-    
+
     .message {
         font-size: 1rem;
     }
@@ -519,14 +516,14 @@ button[type="submit"]:hover, button[type="submit"]:focus {
         font-size: 1.2rem;
     }
 
-       .subject-button {
-        font-size: 1.1rem;
-        padding: 0.6rem;
-        min-height: 10px;
+    .subject-button {
+        font-size: 1.2rem;
+        padding: 0.4rem;
+        min-height: 50px;
     }
 
     .subject-button i {
-        font-size: 1.3rem;
+        font-size: 2rem;
     }
 
     .message {

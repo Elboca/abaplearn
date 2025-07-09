@@ -1,257 +1,246 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
-
-body, html {
-    height: 100%;
-    overflow: hidden;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+      body, html {
+    background: white;
     color: #333;
-    background: linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF);
-    align-items: center;
-    justify-content: center;
 }
 
-.or-divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 20px 0;
+
+
+button {
+    background: linear-gradient(45deg, #42b2f9, #fb8291);
 }
 
-.or-divider::before,
-.or-divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid #5BCEFA;
+.links a {
+    color: #42b2f9;
 }
+            .or-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+        }
 
-.or-divider span {
-    padding: 10px;
-    color: #5BCEFA;
-    font-size: 14px;
-    text-transform: uppercase;
-}
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ccc;
+        }
 
-#intro-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #5BCEFA, #F5A9B8, #FFFFFF);
-    z-index: 1000;
-    transition: opacity 0.4s ease-out;
-}
-
-.intro-element {
-    position: relative;
-    font-size: 1.5rem;
-    color: #333;
-    opacity: 0;
-    transition: all 0.4s ease;
-    margin: 10px 0;
-    text-align: center;
-}
-
-#brain-icon {
-    font-size: 7rem;
-    margin-bottom: 20px;
-    color: #5BCEFA;
-}
-
-#ai-image {
-    width: 180px;
-    height: 180px;
-    margin: 20px 0;
-    opacity: 0;
-    transition: all 0.5s ease;
-}
-
-#animation-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
-.container {
-    background: rgba(255, 255, 255, 0.9);
+        .or-divider span {
+            padding: 10px;
+            color: #777;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        #intro-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #1a4731;
+            z-index: 1000;
+            transition: opacity 0.4s ease-out;
+        }
+        .intro-element {
+            position: relative;
+            font-size: 1.5rem;
+            color: #fff;
+            opacity: 0;
+            transition: all 0.4s ease;
+            margin: 10px 0;
+            text-align: center;
+        }
+        #brain-icon {
+            font-size: 7rem;
+            margin-bottom: 20px;
+        }
+        #ai-image {
+            width: 180px;
+            height: 180px;
+            margin: 20px 0;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        #animation-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .container {
+         background: rgba(66, 178, 249, 0.1);
     backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 20px;
-    width: 90%;
-    max-width: 350px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    z-index: 10;
-}
+            border-radius: 20px;
+            padding: 20px;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: 10;
+        }
 
 .social-login {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 15px;
+    padding: 20px;
     border: none;
     border-radius: 10px;
-    background-color: #5BCEFA;
+    background-color: #007bff;
     color: #fff;
+        bottom: 80px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 15px;
 }
 
 .social-login:hover {
-    background-color: #4a9fd9;
+    background-color: #0056b3;
 }
 
 .google-icon {
     width: 20px;
     height: 20px;
+        padding: 20px;
     margin-right: 10px;
 }
-
-.form-title {
-    color: #5BCEFA;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    text-shadow: 0 0 10px rgba(91, 206, 250, 0.5);
-}
-
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 10px;
-    background: rgba(91, 206, 250, 0.1);
-    border: 1px solid #5BCEFA;
-    border-radius: 5px;
-    color: #333;
-    font-size: 16px;
-}
-
-button {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-    background: linear-gradient(45deg, #5BCEFA, #F5A9B8);
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(91, 206, 250, 0.5);
-}
-
-.links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    padding: 5px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.links p {
-    color: #333;
-    font-size: 1rem;
-    margin-bottom: 10px;
-}
-
-.links a {
-    color: #5BCEFA;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-}
-
-.links a:hover {
-    color: #F5A9B8;
-}
-
+        .form-title {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(45deg, #2ECC40, #1a4731);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(46, 204, 64, 0.5);
+        }
+     
+     
+     .links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .links p {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        /* Estilo para o parágrafo que contém o link */
 .recover {
     text-align: center;
     margin: 10px 0;
 }
 
+/* Estilo para o link dentro do parágrafo .recover */
 .recover a {
-    color: #5BCEFA;
+    color: #4CAF50; /* Verde mais claro, ajuste conforme necessário */
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
     transition: color 0.3s ease;
 }
 
+/* Efeito hover para o link */
 .recover a:hover {
-    color: #F5A9B8;
+    color: #45a049; /* Um tom ligeiramente mais escuro para o hover */
     text-decoration: underline;
 }
 
+/* Opcional: adicionar um ícone antes do link */
 .recover a::before {
-    content: '📚 ';
+    content: '🔑 '; /* Ícone de chave, você pode substituir por outro ou remover */
     margin-right: 3px;
 }
-
-#signup {
-    display: none;
-}
-
-#tagline {
-    position: fixed;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: #333;
-    font-size: 1rem;
-    opacity: 0;
-    transition: opacity 4s ease;
-    padding: 0 10px;
-}
-
-@media (max-height: 600px) {
-    .intro-element {
-        font-size: 1.2rem;
-        margin: 5px 0;
-    }
-    #brain-icon {
-        font-size: 3rem;
-        margin-bottom: 10px;
-    }
-    #ai-image {
-        width: 100px;
-        height: 100px;
-        margin: 10px 0;
-    }
-    .container {
-        padding: 15px;
-    }
-    .form-title {
-        font-size: 1.5rem;
-        margin-bottom: 15px;
-    }
-    #tagline {
-        font-size: 0.8rem;
-    }
-}
+        #signup {
+            display: none;
+        }
+        #tagline {
+        /*    position: absolute; */
+               position: fixed;
+            bottom: 120px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 4s ease;
+            padding: 0 10px; 
+          /*    z-index: 150;*/
+        }
+        @media (max-height: 600px) {
+            .intro-element {
+                font-size: 1.2rem;
+                margin: 5px 0;
+            }
+            #brain-icon {
+                font-size: 3rem;
+                margin-bottom: 10px;
+            }
+            #ai-image {
+                width: 100px;
+                height: 100px;
+                margin: 10px 0;
+            }
+            .container {
+                padding: 15px;
+            }
+            .form-title {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+            #tagline {
+                font-size: 0.8rem;
+            }
+        }
