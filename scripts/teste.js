@@ -4,7 +4,7 @@ import {
 } from './authValidation_simp.js';
 
 // Replace 'YOUR_API_KEY' with your actual key, ensuring that this file remains secure and hidden from the client
-const apiKey = "sk-svcacct-rCZJ4KlGZ1OVeWDVXCjKcX8zkZ7FcYwGd4ooDZ6m1WIrc2M3IgGJj6urQEQhMJT3BlbkFJeP4BeVA70sjes2-6AlD3qthVL69vdrjSSQ-oexFAy0sfebFHexHQ59hMSgxJQA";
+const apiKey = process.env.OPENAI_API_KEY;
 
 const generateButton = document.querySelector(".generate-button");
 const questionsContainer = document.querySelector(".questions-container");
